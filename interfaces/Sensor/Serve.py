@@ -1,5 +1,4 @@
 import threading
-import User
 from Sensor import Sensor
 import Screen
 
