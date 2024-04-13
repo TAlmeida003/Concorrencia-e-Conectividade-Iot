@@ -22,9 +22,6 @@ def receive_and_respond(sensor: Sensor) -> None:
             msg = sensor.receiveMessage().lower()
             get_option_Serve(msg, sensor)
         except RuntimeError as e:
-            Screen.get_clear_prompt()
-            Screen.get_report_error(e.__str__())
-            User.get_main_manu_entry(sensor)
             break
 
 
@@ -39,8 +36,13 @@ def get_option_Serve(user_choice: str, sensor: Sensor) -> None:
         elif user_choice == sensor.__server_options__[1]:  # desligar
             sensor.turnOff()
             resposta["descript"] = "Sensor desligado."
-        elif user_choice == sensor.__server_options__[2] or user_choice == sensor.__server_options__[3]:
+        elif (user_choice == sensor.__server_options__[2] or user_choice == sensor.__server_options__[3]) and not \
+                (sensor.__exe_serve_atual__ == sensor.__server_options__[2] or
+                 sensor.__exe_serve_atual__ == sensor.__server_options__[3]):
             sensor.get_temperature()
+            sensor.__exe_serve_atual__ = user_choice
+            return
+        elif user_choice == sensor.__server_options__[2] or user_choice == sensor.__server_options__[3]:
             sensor.__exe_serve_atual__ = user_choice
             return
         elif user_choice == sensor.__server_options__[4]:  # reiniciar
@@ -66,14 +68,13 @@ def mod_continuo(sensor: Sensor) -> None:
                 if not sensor.__state__:
                     msg = {"success": False, "code": 400, "message": "Sensor foi desligado fisicamente"}
                 elif sensor.__exe_serve_atual__ == sensor.__server_options__[2]:
-                    msg["descript"] = f"Temperatura atual: {sensor.get_temperature()}."
+                    msg["descript"] = f"Temperatura atual: {sensor.__temperature__}."
                 else:
-                    msg["descript"] = f"Umidade atual: {sensor.get_humidity()}."
+                    msg["descript"] = f"Umidade atual: {sensor.__humidity__}."
                 sensor.sendMessageUDP(msg.__str__())
+                msg: dict = {"success": True, "IP": sensor.__IP__, "descript": ""}
         except RuntimeError as e:
             if e.__str__() == "Broker desconectado":
-                Screen.get_clear_prompt()
-                User.get_main_manu_entry(sensor)
                 break
             else:
                 msg = {"success": False, "code": 400, "message": e.__str__()}

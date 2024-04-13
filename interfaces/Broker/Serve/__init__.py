@@ -45,7 +45,7 @@ class Serve:
     def get_dict(self, option: str, ip: str) -> dict:
         try:
             self.dictConnectDevices[ip]["socket"].send(option.encode())
-            self.dictConnectDevices[ip]["socket"].settimeout(5)
+            self.dictConnectDevices[ip]["socket"].settimeout(1)
             return eval(self.dictConnectDevices[ip]["socket"].recv(2048).decode('utf-8'))
         except socket.timeout:
             return self.dictConnectDevices[ip]["data_udp"]
@@ -59,7 +59,6 @@ class Serve:
             try:
                 data, addr = self.serve_udp.recvfrom(2048)
                 data = data.decode()
-                print(data)
                 self.dictConnectDevices[ip]["data_udp"] = eval(data)
             except socket.error:
                 self.dictConnectDevices[ip]["socket"].close()
