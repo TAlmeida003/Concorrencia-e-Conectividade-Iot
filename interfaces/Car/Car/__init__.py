@@ -65,3 +65,12 @@ class Car:
         except socket.error:
             self.disconnectBroker()
             raise RuntimeError("Broker desconectado")
+
+    def get_info(self) -> dict:
+        return {"ip": self.ip,
+                "modelo": self.modelo,
+                "marca": self.marca,
+                "cor": self.cor,
+                "ano": self.ano,
+                "opções": self.server_option
+                }
