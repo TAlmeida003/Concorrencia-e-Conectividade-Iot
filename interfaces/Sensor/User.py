@@ -33,7 +33,7 @@ def display_main_menu(sensor: Sensor) -> None:
     temperatura = round(sensor.get_temperature(), 1).__str__() if sensor.__state__ else "-.-"
     umidade = round(sensor.get_humidity(), 1).__str__() if sensor.__state__ else "-.-"
     Screen.get_baseboard()
-    print(f"| Dispositivo: Sensor       Nome: {sensor.__name__}           IP: {sensor.__IP__} |".center(170))
+    print(f"| Dispositivo: Sensor       Nome: {sensor.__name__}          IP: {sensor.__IP__: ^15} |".center(170))
     print(f"| Broker: {conexao:^8}         Temperatura: {temperatura:^4}ºC       "
           f"   Umidade: {umidade: ^4}% |".center(170))
     print(f"| Estado do sensor: {state:^10} "
@@ -103,5 +103,3 @@ def get_option(user_choice: int, sensor: Sensor) -> None:
     except RuntimeError as e:
         Screen.get_clear_prompt()
         Screen.get_report_error(e.__str__())
-
-#Concorrencia-e-Conectividade-Internet-das-Coisas
