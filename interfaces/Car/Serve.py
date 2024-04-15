@@ -17,19 +17,22 @@ def iniciar_conexao(car: Car) -> None:
 def receive_and_respond(car: Car) -> None:
     while True:
         try:
-            msg = car.receiveMessage().lower()
+            msg: dict = eval(car.receiveMessage())
             get_option_Serve(msg, car)
         except RuntimeError as e:
             break
 
 
-def get_option_Serve(user_choice: str, car: Car) -> None:
-    resposta: dict = {}
+def get_option_Serve(pack_msg: dict , car: Car) -> None:
+    resposta: dict = {"success": True, "IP": car.ip, "descript": ""}
     try:
-        if user_choice == "data":
+        if pack_msg["option"] == "data":
             resposta = car.get_info()
-    except RuntimeError:
-        pass
+        elif pack_msg["option"] == "teste":
+            return
+
+    except RuntimeError as e:
+        resposta = {"success": False, "code": 400, "message": e.__str__()}
 
     car.sendMessageTCP(resposta.__str__())
 

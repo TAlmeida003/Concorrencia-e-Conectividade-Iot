@@ -18,8 +18,8 @@ def iniciar_conexao(sensor: Sensor) -> None:
 def receive_and_respond(sensor: Sensor) -> None:
     while True:
         try:
-            msg = sensor.receiveMessage().lower()
-            get_option_Serve(msg, sensor)
+            msg: dict = eval(sensor.receiveMessage())
+            get_option_Serve(msg["option"], sensor)
         except RuntimeError as e:
             break
 
