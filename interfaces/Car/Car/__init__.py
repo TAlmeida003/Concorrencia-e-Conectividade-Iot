@@ -1,6 +1,6 @@
 import socket
 
-HOST: str = '192.168.25.107'
+HOST: str = '192.168.0.104'
 PORT_TCP: int = 5001
 PORT_UDP: int = 5000
 
@@ -19,7 +19,7 @@ class Car:
         self.gasoline: float = 0
         self.door_locked: bool = False
         self.direction: str = "parado"
-        self.distance: int = 0
+        self.distance: float = 0
         self.moving: bool = False
         self.collision: bool = False
 
@@ -78,8 +78,6 @@ class Car:
             raise RuntimeError("O veículo já está ligado")
         elif self.battery == 0:
             raise RuntimeError("O veículo está sem bateria")
-        elif self.gasoline == 0:
-            raise RuntimeError("O veículo está sem gasolina")
 
         self.state = True
 
@@ -154,7 +152,9 @@ class Car:
         elif not self.moving:
             raise RuntimeError("Inicie o movimento do carro")
 
-        self.distance += self.speed
+        speed_ms = self.speed * 1000 / 3600
+
+        self.distance += speed_ms
 
     def start_movement(self) -> None:
         if self.moving:
