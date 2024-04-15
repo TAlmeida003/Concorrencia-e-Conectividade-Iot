@@ -1,6 +1,6 @@
 import socket
 
-HOST: str = '192.168.25.107'
+HOST: str = '192.168.0.104'
 PORT_TCP: int = 5001
 PORT_UDP: int = 5000
 
@@ -77,14 +77,14 @@ class Sensor:
     def turnOff(self) -> None:
         # Desligar sensor
         if not self.__state__:
-            raise RuntimeError("O senor já está desligado.")
+            raise RuntimeError("O sensor já está desligado.")
 
         self.__state__ = False
 
     def setTemperature(self, value: float) -> None:
         # Definir temperatura
         if not self.__state__:
-            raise RuntimeError("O senor está desligado.")
+            raise RuntimeError("O sensor está desligado.")
         elif value > 60:
             raise RuntimeError("Temperatura alta: limite de 60 ºC")
         elif 5 > value:
@@ -94,7 +94,7 @@ class Sensor:
     def setHumidity(self, value: float) -> None:
         # Definir umidade
         if not self.__state__:
-            raise RuntimeError("O senor está desligado.")
+            raise RuntimeError("O sensor está desligado.")
         elif value > 80:
             raise RuntimeError("umidade alta: limite de 80%")
         elif 20 > value:
