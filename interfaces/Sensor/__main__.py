@@ -10,11 +10,15 @@ def main() -> None:
 
     Serve.iniciar_conexao(sensor)
 
-    user_choice: int = User.get_main_manu_entry(sensor)
-
-    while not User.is_exit_option(user_choice):
-        User.get_option(user_choice, sensor)
+    try:
         user_choice: int = User.get_main_manu_entry(sensor)
+
+        while not User.is_exit_option(user_choice):
+            User.get_option(user_choice, sensor)
+            user_choice: int = User.get_main_manu_entry(sensor)
+
+    except KeyboardInterrupt:
+        sensor.disconnectBroker()
 
     sensor.disconnectBroker()
 
