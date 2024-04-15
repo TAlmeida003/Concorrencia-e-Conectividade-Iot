@@ -36,9 +36,10 @@ class Serve:
 
             threading.Thread(target=self.get_recv_udp, args=[device_socket.getpeername()[0]]).start()
 
-    def get_device_option(self, ip: str, option: str) -> dict:
+    def get_device_option(self, ip: str, option: str, value: str = None) -> dict:
+        pack_msg: dict = {"option": option, "value": value}
         try:
-            return self.get_dict(option, ip)
+            return self.get_dict(pack_msg.__str__(), ip)
         except KeyError:
             raise RuntimeError("Nao existe nenhum dispositivo com esse ip.")
 
@@ -67,7 +68,8 @@ class Serve:
 
     def get_device(self, ip: str) -> dict:
         try:
-            return self.get_dict("data", ip)
+            pack_msg: dict = {"option": "data", "value": ""}
+            return self.get_dict(pack_msg.__str__(), ip)
         except KeyError:
             raise RuntimeError("Nao existe nenhum dispositivo com esse ip.")
 
@@ -81,9 +83,14 @@ class Serve:
 
     def is_connect(self, ip_device) -> bool:
         try:
-            self.dictConnectDevices[ip_device]["socket"].send("teste".encode())
+            pack_msg: dict = {"option": "teste", "value": ""}
+            self.dictConnectDevices[ip_device]["socket"].send(pack_msg.__str__().encode())
             return True
         except socket.error:
             self.dictConnectDevices[ip_device]["socket"].close()
             self.dictConnectDevices.pop(ip_device)
             return False
+
+    def end(self) -> None:
+        self.serve_tcp.close()
+        self.serve_udp.close()
