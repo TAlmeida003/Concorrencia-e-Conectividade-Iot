@@ -1,4 +1,6 @@
 import threading
+import time
+
 from Sensor import Sensor
 import Screen
 
@@ -29,28 +31,22 @@ def get_option_Serve(user_choice: str, sensor: Sensor) -> None:
     try:
         sensor.set_option_serve(user_choice)
 
-        if user_choice == sensor.__server_options__[0]:  # ligar
+        if user_choice == sensor.__server_options__[0][0]:  # ligar
             sensor.turnOn()
             resposta["descript"] = "Sensor ligado."
-        elif user_choice == sensor.__server_options__[1]:  # desligar
+        elif user_choice == sensor.__server_options__[1][0]:  # desligar
             sensor.turnOff()
             resposta["descript"] = "Sensor desligado."
-        elif (user_choice == sensor.__server_options__[2] or user_choice == sensor.__server_options__[3]) and not \
-                (sensor.__exe_serve_atual__ == sensor.__server_options__[2] or
-                 sensor.__exe_serve_atual__ == sensor.__server_options__[3]):
-            sensor.get_temperature()
+        elif user_choice == sensor.__server_options__[2][0] or user_choice == sensor.__server_options__[3][0]:
             sensor.__exe_serve_atual__ = user_choice
             return
-        elif user_choice == sensor.__server_options__[2] or user_choice == sensor.__server_options__[3]:
-            sensor.__exe_serve_atual__ = user_choice
-            return
-        elif user_choice == sensor.__server_options__[4]:  # reiniciar
+        elif user_choice == sensor.__server_options__[4][0]:  # reiniciar
             sensor.restart()
             resposta["descript"] = "Sensor reiniciado."
         elif user_choice == "data":
             resposta = sensor.get_info()
         elif user_choice == "opcoes":
-            resposta = {"opcoes": sensor.get_list_options()}
+            resposta = {"option": sensor.get_list_options()}
         elif user_choice == "teste":
             return
     except RuntimeError as e:
@@ -60,18 +56,18 @@ def get_option_Serve(user_choice: str, sensor: Sensor) -> None:
 
 
 def mod_continuo(sensor: Sensor) -> None:
-    msg: dict = {"success": True, "IP": sensor.__IP__, "descript": ""}
     while True:
         try:
             while sensor.is_continuous_mod():
-                if not sensor.__state__:
-                    msg = {"success": False, "code": 400, "message": "Sensor foi desligado fisicamente"}
-                elif sensor.__exe_serve_atual__ == sensor.__server_options__[2]:
-                    msg["descript"] = f"Temperatura atual: {sensor.__temperature__}."
-                else:
-                    msg["descript"] = f"Umidade atual: {sensor.__humidity__}."
-                sensor.sendMessageUDP(msg.__str__())
+
                 msg: dict = {"success": True, "IP": sensor.__IP__, "descript": ""}
+                if sensor.__exe_serve_atual__ == sensor.__server_options__[2][0]:
+                    msg["descript"] = f"Temperatura atual: {sensor.get_temperature()}."
+                else:
+                    msg["descript"] = f"Umidade atual: {sensor.get_humidity()}."
+                sensor.sendMessageUDP(msg.__str__())
+
+                time.sleep(1)
         except RuntimeError as e:
             if e.__str__() == "Broker desconectado":
                 break
