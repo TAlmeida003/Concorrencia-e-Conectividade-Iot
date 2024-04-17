@@ -1,5 +1,6 @@
 import APP
 
+
 if __name__ == '__main__':
     try:
         APP.serve.connect_device()
