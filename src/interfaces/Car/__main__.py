@@ -19,6 +19,7 @@ def main() -> None:
     except KeyboardInterrupt:
         Screen.get_clear_prompt()
         car.disconnectBroker()
+        return
 
     Screen.get_clear_prompt()
     car.disconnectBroker()

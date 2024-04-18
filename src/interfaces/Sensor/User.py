@@ -5,16 +5,13 @@ import Serve
 
 def is_exit_option(user_choice: int) -> bool:
     OPTION_EXIT: int = 8
-
     if user_choice != OPTION_EXIT:
         return False
     return True
 
 
 def check_option_main_menu(user_choice: int) -> None:
-    set_option: set[int] = {1, 2, 3, 4, 5, 6, 7, 8}
-
-    if user_choice not in set_option:
+    if user_choice < 1 or user_choice > 8:
         raise RuntimeError("OPÇÃO INVALIDA")
 
 

@@ -1,6 +1,6 @@
 import socket
 
-HOST: str = '10.65.136.191'
+HOST: str = '192.168.0.104'
 PORT_TCP: int = 5001
 PORT_UDP: int = 5000
 

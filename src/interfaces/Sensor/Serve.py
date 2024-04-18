@@ -1,12 +1,11 @@
 import threading
 import time
-
 from Sensor import Sensor
 import Screen
 
 
 def iniciar_conexao(sensor: Sensor) -> None:
-    print("conectando ao servidor...".center(170))
+    print((Screen.get_paint_color() + "conectando ao servidor...").center(170))
     try:
         sensor.connectBroker()
         threading.Thread(target=receive_and_respond, args=[sensor]).start()
@@ -30,7 +29,6 @@ def get_option_Serve(user_choice: str, sensor: Sensor) -> None:
     resposta: dict = {"success": True, "IP": sensor.__IP__, "descript": ""}
     try:
         sensor.set_option_serve(user_choice)
-
         if user_choice == sensor.__server_options__[0][0]:  # ligar
             sensor.turnOn()
             resposta["descript"] = "Sensor ligado."
@@ -59,12 +57,12 @@ def mod_continuo(sensor: Sensor) -> None:
     while True:
         try:
             while sensor.is_continuous_mod():
-
                 msg: dict = {"success": True, "IP": sensor.__IP__, "descript": ""}
+
                 if sensor.__exe_serve_atual__ == sensor.__server_options__[2][0]:
-                    msg["descript"] = f"Temperatura atual: {sensor.get_temperature()}."
+                    msg["descript"] = f"Temperatura atual: {sensor.get_temperature()}ºC."
                 else:
-                    msg["descript"] = f"Umidade atual: {sensor.get_humidity()}."
+                    msg["descript"] = f"Umidade atual: {sensor.get_humidity()}%."
                 sensor.sendMessageUDP(msg.__str__())
 
                 time.sleep(1)

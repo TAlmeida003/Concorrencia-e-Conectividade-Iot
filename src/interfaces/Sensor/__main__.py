@@ -7,7 +7,6 @@ import User
 def main() -> None:
     Screen.get_clear_prompt()
     sensor = Sensor()
-
     Serve.iniciar_conexao(sensor)
 
     try:

@@ -32,11 +32,12 @@ def display_main_menu(car: Car) -> None:
     movimento = "Ativa" if car.moving else "Desativado"
     colisao = "Detectada" if car.moving else "--------"
 
+
     Screen.get_baseboard()
-    print(f"| Dispositivo: Carro           Modelo: {car.model}           IP: {car.ip: ^15} |".center(170))
+    print(f"| Dispositivo: Carro           Modelo: {car.__model__}           IP: {car.ip: ^15} |".center(170))
     print(f"| Broker: {conexao: ^8}     Velocidade: {car.speed: ^3}Km/h      Estado do carro: {state: ^10} |"
           f"".center(170))
-    print(f"| Marca: {car.brand}                  Cor: {car.color: ^5}                      Ano: {car.year: ^4} |"
+    print(f"| Marca: {car.__brand__}                  Cor: {car.color: ^5}                      Ano: {car.year: ^4} |"
           f"".center(170))
     print(f"| Bateria: {car.battery: ^3}%             Gasolina: {round(car.gasoline, 1):^4}L               Porta: {porta: ^10} "
           f"|".center(170))
@@ -53,7 +54,7 @@ def display_main_menu(car: Car) -> None:
     list_option: list[str] = ["LIGAR VEÍCULO", "DESLIGAR VEÍCULO", "CONECTAR AO BROKER", "DESCONECTAR DO BROKER",
                               "DEFINIR VELOCIDADE", "DEFINIR BATERIA", "DEFINIR GASOLINA", "TRAVAR PORTA",
                               "DESTRAVAR PORTA", "DEFINIR DIREÇÃO PARA FRENTE", "INICIAR MOVIMENTO", "PARAR VEÍCULO",
-                              "DEFINIR DIREÇÃO PARA TRAZ", "ATIVAR SENSOR DE COLISÃO", "DESATIVA SENSOR DE COLISÃO",
+                              "DEFINIR DIREÇÃO PARA TRÁS", "ATIVAR SENSOR DE COLISÃO", "DESATIVA SENSOR DE COLISÃO",
                               "ATIVA BUZINA", "DESATIVAR BUZINA", "ENCERRAR PROGRAMA"]
     for i in range(1, len(list_option), 3):
         print(f"[ {i: ^1} ] - {list_option[i - 1]:^26}        [ {i + 1:^1} ] - {list_option[i]:^26}        "
@@ -83,6 +84,7 @@ def get_main_manu_entry(car: Car) -> int:
 
 def get_option(user_choice: int, car: Car) -> None:
     try:
+
         if user_choice == 1:  # LIGAR VEÍCULO
             car.turnOn()
         elif user_choice == 2:  # DESLIGAR VEÍCULO
@@ -119,7 +121,7 @@ def get_option(user_choice: int, car: Car) -> None:
             car.start_movement()
         elif user_choice == 12:  # PARAR VEÍCULO
             car.stop()
-        elif user_choice == 13:  # DEFINIR DIREÇÃO PARA TRAZ
+        elif user_choice == 13:  # DEFINIR DIREÇÃO PARA TRAS
             car.go_backward()
         elif user_choice == 14:  # ATIVAR SENSOR DE COLISÃO
             car.collision_detected()
