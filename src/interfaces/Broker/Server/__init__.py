@@ -124,5 +124,7 @@ class Server:
             for i in self.__dictConnectDevices__[ip]["opcoes"]:
                 if option == i[0] and method != i[2]:
                     raise RuntimeError("Esta rota aceita apenas solicitações " + i[2])
+                elif option == "data" or option == "teste" or option == "opcoes":
+                    raise RuntimeError("Opções indisponíveis para o usuário.")
         except KeyError as e:
             raise RuntimeError("Nao existe nenhum dispositivo com esse ip.")
