@@ -1,6 +1,6 @@
 import socket
 
-HOST: str = '192.168.0.104'
+HOST: str = '192.168.25.105'
 PORT_TCP: int = 5001
 PORT_UDP: int = 5000
 
@@ -143,8 +143,8 @@ class Sensor:
 
     def get_info(self) -> dict:
         # Obter informações do sensor
-        return {"IP": self.__IP__,
-                "nome": self.__name__,
+        return {"ip": self.__IP__,
+                "name": self.__name__,
                 "opções": self.__server_options__,
                 "tag": self.__tag__
                 }

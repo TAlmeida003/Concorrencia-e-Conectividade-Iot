@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-HOST: str = '192.168.0.104'
+HOST: str = '192.168.25.105'
 PORT_TCP: int = 5001
 PORT_UDP: int = 5000
 
@@ -13,7 +13,8 @@ class Car:
         self.__brand__: str = "Corolla"
         self.color: str = "Preto"
         self.year: int = 2022
-        self.type: str = "carro"
+        self.tag: str = "carro"
+        self.name: str = "CARTN05"
 
         self.speed: int = 0
         self.state: bool = False
@@ -38,7 +39,8 @@ class Car:
                                                            ("iniciar-movimento", True, "POST"),
                                                            ("ativa-buzina", True, "POST"),
                                                            ("desativar-buzina", True, "POST"),
-                                                           ("medir-distancia", False, "GET")]
+                                                           ("medir-distancia", False, "GET"),
+                                                           ("status", False, "GET")]
         self.current_server_exe: str = ""
 
         self.tcp_connection: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -103,7 +105,8 @@ class Car:
             raise RuntimeError("O carro não pode ser desligado em movimento")
 
         self.state = False
-        self.stop()
+        self.distance = 0
+        self.direction = "parado"
 
     def set_battery(self, value: int) -> None:
         if value < 0 or value > 100:
@@ -227,15 +230,13 @@ class Car:
 
     def is_continuo(self) -> bool:
         return (self.current_server_exe == self.server_option[2][0]) or \
-                (self.current_server_exe == self.server_option[12][0])
+                (self.current_server_exe == self.server_option[12][0]) or \
+                (self.current_server_exe == self.server_option[13][0])
 
     def get_info(self) -> dict:
         return {"ip": self.ip,
-                "modelo": self.__model__,
-                "marca": self.__brand__,
-                "cor": self.color,
-                "ano": self.year,
-                "tipo": self.type,
+                "name": self.name,
+                "tag": self.tag,
                 "opções": self.server_option
                 }
 
@@ -253,3 +254,17 @@ class Car:
         elif not self.moving:
             raise RuntimeError("O veículo não está em movimento")
         return self.distance
+
+    def get_status(self) -> dict:
+        return {"modelo": self.__model__,
+                "marca": self.__brand__,
+                "cor": self.color,
+                "ano": self.year,
+                "estado": "Ligado" if self.state else "Desligado",
+                "bateria": self.battery,
+                "gasolina": self.gasoline,
+                "porta": "Travada" if self.door_locked else "Destravada",
+                "direcao": self.direction,
+                "movimento": "Em movimento" if self.moving else "Parado",
+                "colisao": "Detectada" if self.collision else "Não detectada"
+                }

@@ -29,26 +29,35 @@ def get_option_Serve(user_choice: str, sensor: Sensor) -> None:
     resposta: dict = {"success": True, "IP": sensor.__IP__, "descript": ""}
     try:
         sensor.set_option_serve(user_choice)
+
         if user_choice == sensor.__server_options__[0][0]:  # ligar
             sensor.turnOn()
             resposta["descript"] = "Sensor ligado."
+
         elif user_choice == sensor.__server_options__[1][0]:  # desligar
             sensor.turnOff()
             resposta["descript"] = "Sensor desligado."
+
         elif user_choice == sensor.__server_options__[2][0] or user_choice == sensor.__server_options__[3][0]:
-            sensor.__exe_serve_atual__ = user_choice
             return
+
         elif user_choice == sensor.__server_options__[4][0]:  # reiniciar
             sensor.restart()
             resposta["descript"] = "Sensor reiniciado."
+
         elif user_choice == "data":
             resposta = sensor.get_info()
+            resposta["success"] = True
+
         elif user_choice == "opcoes":
             resposta = {"option": sensor.get_list_options()}
+            resposta["success"] = True
+
         elif user_choice == "teste":
-            return
+            resposta = {"success": True, "option": "teste", "descript": "Teste de comunicação"}
+
     except RuntimeError as e:
-        resposta = {"success": False, "code": 400, "message": e.__str__()}
+        resposta = {"success": False, "code": 400, "descript": e.__str__()}
 
     sensor.sendMessageTCP(resposta.__str__())
 
@@ -70,5 +79,5 @@ def mod_continuo(sensor: Sensor) -> None:
             if e.__str__() == "Broker desconectado":
                 break
             else:
-                msg = {"success": False, "code": 400, "message": e.__str__()}
+                msg = {"success": False, "code": 400, "descript": e.__str__()}
                 sensor.sendMessageUDP(msg.__str__())

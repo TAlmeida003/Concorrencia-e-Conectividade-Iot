@@ -1,5 +1,7 @@
 import socket
 import threading
+import time
+from threading import Lock
 
 HOST: str = socket.gethostbyname(socket.gethostname())
 PORT_TCP: int = 5001
@@ -7,11 +9,13 @@ PORT_UDP: int = 5000
 
 
 class Server:
+
     def __init__(self) -> None:
         self.__dictConnectDevices__: dict = {}
 
         self.__serve_udp__ = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.__serve_tcp__ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.lock: Lock = Lock()
 
     def connect_device(self) -> None:
         try:
@@ -29,7 +33,7 @@ class Server:
     def thread_connect_device(self) -> None:
         while True:
             device_socket, addr = self.__serve_tcp__.accept()
-            ip: str = device_socket.getpeername()[0]
+            ip: str = str(device_socket.getpeername()[1])
 
             dict_device: dict = {"ip": ip, "socket": device_socket, "data_udp": {}, "opcoes": {}}
             self.__dictConnectDevices__[ip] = dict_device
@@ -46,16 +50,17 @@ class Server:
 
     def get_dict(self, option: str, ip: str) -> dict:
         try:
-            self.__dictConnectDevices__[ip]["socket"].send(option.encode())
+            with self.lock:
+                self.__dictConnectDevices__[ip]["socket"].send(option.encode())
 
-            self.__dictConnectDevices__[ip]["socket"].settimeout(30)
-            if self.is_command_utp(option, ip):
-                return eval(self.__dictConnectDevices__[ip]["socket"].recv(2048).decode('utf-8'))
+                self.__dictConnectDevices__[ip]["socket"].settimeout(30)
+                if self.is_command_utp(option, ip):
+                    return eval(self.__dictConnectDevices__[ip]["socket"].recv(2048).decode('utf-8'))
 
-            self.__dictConnectDevices__[ip]["flag_data"] = False
-            while not self.__dictConnectDevices__[ip]["flag_data"]:
-                pass
-            return self.__dictConnectDevices__[ip]["data_udp"]
+                self.__dictConnectDevices__[ip]["flag_data"] = False
+                while not self.__dictConnectDevices__[ip]["flag_data"]:
+                    time.sleep(0.1)
+                return self.__dictConnectDevices__[ip]["data_udp"]
         except socket.timeout:
             raise RuntimeError("Tempo limite excedido")
         except socket.error:
@@ -79,7 +84,7 @@ class Server:
         pack_msg: dict = {"option": "data", "value": ""}
         try:
             return self.get_dict(pack_msg.__str__(), ip)
-        except KeyError as e:
+        except KeyError:
             raise RuntimeError("Nao existe nenhum dispositivo com esse ip.")
 
     def get_list_devices(self) -> list:
@@ -92,9 +97,11 @@ class Server:
 
     def is_connect(self, ip_device) -> bool:
         try:
-            pack_msg: dict = {"option": "teste", "value": ""}
-            self.__dictConnectDevices__[ip_device]["socket"].send(pack_msg.__str__().encode())
-            return True
+            with self.lock:
+                pack_msg: dict = {"option": "teste", "value": ""}
+                self.__dictConnectDevices__[ip_device]["socket"].send(pack_msg.__str__().encode())
+                self.__dictConnectDevices__[ip_device]["socket"].recv(2048)
+                return True
         except socket.error:
             self.__dictConnectDevices__[ip_device]["socket"].close()
             self.__dictConnectDevices__.pop(ip_device)
@@ -110,13 +117,13 @@ class Server:
                 return False
         return True
 
-    def get_list_options(self, ip: str) -> dict:
+    def get_list_options(self, ip: str) -> list:
         list_options: list = []
         try:
             for i in self.__dictConnectDevices__[ip]["opcoes"]:
-                list_options.append(i[0])
-            return {"options": list_options}
-        except KeyError as e:
+                list_options.append((i[0], i[1]))
+            return list_options
+        except KeyError:
             raise RuntimeError("Nao existe nenhum dispositivo com esse ip.")
 
     def check_method_option(self, ip: str, option: str, method):
@@ -126,5 +133,5 @@ class Server:
                     raise RuntimeError("Esta rota aceita apenas solicitações " + i[2])
                 elif option == "data" or option == "teste" or option == "opcoes":
                     raise RuntimeError("Opções indisponíveis para o usuário.")
-        except KeyError as e:
+        except KeyError:
             raise RuntimeError("Nao existe nenhum dispositivo com esse ip.")

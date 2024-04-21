@@ -1,5 +1,6 @@
 import os
 
+
 def get_report_error(text: str) -> None:
     SIZE_CENTER_TEXT: int = 170
     NUM_BAR: int = 48

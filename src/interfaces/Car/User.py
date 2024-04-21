@@ -4,11 +4,7 @@ import Serve
 
 
 def is_exit_option(user_choice: int) -> bool:
-    OPTION_EXIT: int = 18
-
-    if user_choice != OPTION_EXIT:
-        return False
-    return True
+    return user_choice == 18
 
 
 def check_option_main_menu(user_choice: int) -> None:
