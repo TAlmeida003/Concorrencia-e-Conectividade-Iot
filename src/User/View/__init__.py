@@ -72,7 +72,7 @@ def print_device_options(ip: str) -> None:
     print(f"|{('_' * 75): ^86}|".center(168))
     pular_linha(2)
 
-    list_options = requests.get(f'http://{HOST}:{PORT}/devices/{ip}/opcoes').json()
+    list_options = requests.get(f'http://{HOST}:{PORT}/devices/{ip}/options').json()
     print_options_devices(list_options)
 
     pular_linha(2)

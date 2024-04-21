@@ -1,7 +1,7 @@
 import threading
 import time
 
-import Screen
+import View
 from Car import Car
 
 
@@ -11,10 +11,10 @@ def iniciar_conexao(car: Car) -> None:
         car.connectBroker()
         threading.Thread(target=receive_and_respond, args=[car]).start()
         threading.Thread(target=get_option_Serve_udp, args=[car]).start()
-        Screen.get_clear_prompt()
+        View.get_clear_prompt()
     except RuntimeError as e:
-        Screen.get_clear_prompt()
-        Screen.get_report_error(e.__str__())
+        View.get_clear_prompt()
+        View.get_report_error(e.__str__())
 
 
 def receive_and_respond(car: Car) -> None:

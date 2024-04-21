@@ -1,11 +1,11 @@
 from Sensor import Sensor
-import Screen
+import View
 import Serve
 import User
 
 
 def main() -> None:
-    Screen.get_clear_prompt()
+    View.get_clear_prompt()
     sensor = Sensor()
     Serve.iniciar_conexao(sensor)
 

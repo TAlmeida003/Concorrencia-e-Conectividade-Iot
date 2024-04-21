@@ -1,5 +1,5 @@
 from Car import Car
-import Screen
+import View
 import Serve
 
 
@@ -17,7 +17,7 @@ def is_a_valid_main_menu_option(user_choice: int) -> bool:
         check_option_main_menu(user_choice)
         return True
     except RuntimeError as error:
-        Screen.get_report_error(error.__str__())
+        View.get_report_error(error.__str__())
         return False
 
 
@@ -29,7 +29,7 @@ def display_main_menu(car: Car) -> None:
     colisao = "Detectada" if car.moving else "--------"
 
 
-    Screen.get_baseboard()
+    View.get_baseboard()
     print(f"| Dispositivo: Carro           Modelo: {car.__model__}           IP: {car.ip: ^15} |".center(170))
     print(f"| Broker: {conexao: ^8}     Velocidade: {car.speed: ^3}Km/h      Estado do carro: {state: ^10} |"
           f"".center(170))
@@ -42,9 +42,9 @@ def display_main_menu(car: Car) -> None:
     print(f"| Colisão: {colisao: ^9}                 Ultima requisição do broker: {car.current_server_exe: ^9} |"
           f"".center(170))
 
-    Screen.get_baseboard()
+    View.get_baseboard()
     print("\n", (("=" * 15) + " MENU PRINCIPAL " + ("=" * 15)).center(170), "\n")
-    Screen.get_baseboard()
+    View.get_baseboard()
     print()
 
     list_option: list[str] = ["LIGAR VEÍCULO", "DESLIGAR VEÍCULO", "CONECTAR AO BROKER", "DESCONECTAR DO BROKER",
@@ -55,7 +55,7 @@ def display_main_menu(car: Car) -> None:
     for i in range(1, len(list_option), 3):
         print(f"[ {i: ^1} ] - {list_option[i - 1]:^26}        [ {i + 1:^1} ] - {list_option[i]:^26}        "
               f"[ {i + 2: ^1} ] - {list_option[i + 1]: ^26}".center(170), "\n" * 1)
-    Screen.get_baseboard()
+    View.get_baseboard()
     print(" " * 41, "* INFORME QUAL A OPÇÃO DESEJADA: ", end="")
 
 
@@ -65,7 +65,7 @@ def input_main_menu_option(car: Car) -> int:
         user_choice: int = int(input())
         return user_choice
     except ValueError:
-        Screen.get_clear_prompt()
+        View.get_clear_prompt()
         return -1
 
 
@@ -127,9 +127,9 @@ def get_option(user_choice: int, car: Car) -> None:
             pass
         elif user_choice == 17:  # DESATIVAR BUZINA
             pass
-        Screen.get_clear_prompt()
+        View.get_clear_prompt()
     except RuntimeError as e:
-        Screen.get_clear_prompt()
-        Screen.get_report_error(e.__str__())
+        View.get_clear_prompt()
+        View.get_report_error(e.__str__())
 
 

@@ -1,4 +1,4 @@
-import Screen
+import View
 from Sensor import Sensor
 import Serve
 
@@ -20,7 +20,7 @@ def is_a_valid_main_menu_option(user_choice: int) -> bool:
         check_option_main_menu(user_choice)
         return True
     except RuntimeError as error:
-        Screen.get_report_error(error.__str__())
+        View.get_report_error(error.__str__())
         return False
 
 
@@ -29,26 +29,26 @@ def display_main_menu(sensor: Sensor) -> None:
     state = "ligado" if sensor.__state__ else "desligado"
     temperatura = round(sensor.get_temperature(), 1).__str__() if sensor.__state__ else "-.-"
     umidade = round(sensor.get_humidity(), 1).__str__() if sensor.__state__ else "-.-"
-    Screen.get_baseboard()
+    View.get_baseboard()
     print(f"| Dispositivo: Sensor       Nome: {sensor.__name__}          IP: {sensor.__IP__: ^15} |".center(170))
     print(f"| Broker: {conexao:^8}         Temperatura: {temperatura:^4}ºC       "
           f"   Umidade: {umidade: ^4}% |".center(170))
     print(f"| Estado do sensor: {state:^10} "
           f" Ultima requisição do broker: {sensor.__exe_serve_atual__:^9} |".center(170))
-    Screen.get_baseboard()
+    View.get_baseboard()
 
     list_option: list[str] = ["LIGAR SENSOR", "DESLIGAR SENSOR", "CONECTAR AO BROKER", "DESCONECTAR DO BROKER",
                               "ALTERAR O NOME DO SENSOR", "MUDAR TEMPERATURA DO SENSOR",
                               "MUDAR UMIDADE DO SENSOR", "ENCERRAR PROGRAMA"]
 
     print("\n", (("=" * 15) + " MENU PRINCIPAL " + ("=" * 15)).center(170), "\n")
-    Screen.get_baseboard()
+    View.get_baseboard()
     print()
     print(" " * 52, f"[ 1 ] - {list_option[0]:^9}               [ 2 ] - {list_option[1]:^9}", "\n" * 2)
     print(" " * 52, f"[ 3 ] - {list_option[2]:^9}         [ 4 ] - {list_option[3]:^9}", "\n" * 2)
     print(" " * 52, f"[ 5 ] - {list_option[4]:^9}   [ 6 ] - {list_option[5]:^9}", "\n" * 2)
     print(" " * 52, f"[ 7 ] - {list_option[6]:^9}    [ 8 ] - {list_option[7]:^9}", "\n" * 2)
-    Screen.get_baseboard()
+    View.get_baseboard()
     print(" " * 52, "* INFORME QUAL A OPÇÃO DESEJADA: ", end="")
 
 
@@ -58,7 +58,7 @@ def input_main_menu_option(sensor: Sensor) -> int:
         user_choice: int = int(input())
         return user_choice
     except ValueError:
-        Screen.get_clear_prompt()
+        View.get_clear_prompt()
         return -1
 
 
@@ -96,7 +96,7 @@ def get_option(user_choice: int, sensor: Sensor) -> None:
                 sensor.setHumidity(float(input()))
             except ValueError:
                 raise RuntimeError("Campo destinado a números")
-        Screen.get_clear_prompt()
+        View.get_clear_prompt()
     except RuntimeError as e:
-        Screen.get_clear_prompt()
-        Screen.get_report_error(e.__str__())
+        View.get_clear_prompt()
+        View.get_report_error(e.__str__())

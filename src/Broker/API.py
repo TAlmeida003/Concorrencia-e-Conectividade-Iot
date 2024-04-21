@@ -25,10 +25,10 @@ app = Flask(__name__)
 @app.route('/devices', methods=['GET'])  # GET Listar dispositivos
 def get_devices():
     """
-       Obter uma lista de dispositivos.
+    Obter uma lista de dispositivos.
 
-       Retorna:
-           JSON: Uma resposta JSON contendo a lista de dispositivos.
+    Retorna:
+        JSON: Uma resposta JSON contendo a lista de dispositivos.
        """
     if request.method != 'GET':
         return jsonify({"success": False, "descript": "Esta rota aceita apenas solicitações GET"}), 405
@@ -76,7 +76,7 @@ def get_options_device(ip: str):
         return jsonify({"success": False, "descript": e.__str__()}), 400
 
 
-@app.route('/devices/<string:ip>/<string:option>', methods=['GET'])  # GET listar opções do dispositivo
+@app.route('/devices/<string:ip>/<string:option>', methods=['GET'])
 def get_option_device(ip: str, option: str):
     """
         Obter o valor de uma opção específica para um dispositivo identificado pelo seu endereço IP.
@@ -98,18 +98,18 @@ def get_option_device(ip: str, option: str):
         return jsonify({"success": False, "descript": e.__str__()}), 400
 
 
-@app.route('/devices/<string:ip>/<string:option>', methods=['POST'])  # GET opções ex.: ligar
-def put_option_device(ip: str, option: str):
+@app.route('/devices/<string:ip>/<string:option>', methods=['POST'])
+def post_option_device(ip: str, option: str):
     """
-        Definir o valor de uma opção específica para um dispositivo identificado pelo seu endereço IP.
+    Define uma opção específica para um dispositivo identificado pelo seu endereço IP.
 
-        Parâmetros:
-            ip (str): O endereço IP do dispositivo.
-            option (str): A opção a ser definida.
+    Parâmetros:
+        ip (str): O endereço IP do dispositivo.
+        option (str): A opção a ser definida.
 
-        Retorna:
-            JSON: Uma resposta JSON confirmando o sucesso da operação.
-        """
+    Retorna:
+        JSON: Uma resposta JSON confirmando o sucesso da operação.
+    """
     try:
         serve.check_method_option(ip, option, request.method)
         dict_resp: dict = serve.get_device_option(ip, option)
@@ -120,19 +120,19 @@ def put_option_device(ip: str, option: str):
         return jsonify({"success": False, "descript": e.__str__()}), 400
 
 
-@app.route('/devices/<string:ip>/<string:option>/<string:value>', methods=['POST'])  # GET opções ex.: temperatura
-def put_option_device_value(ip: str, option: str, value: str):
+@app.route('/devices/<string:ip>/<string:option>/<string:value>', methods=['POST'])
+def post_option_device_value(ip: str, option: str, value: str):
     """
-        Definir o valor de uma opção específica para um dispositivo identificado pelo seu endereço IP.
+    Define o valor de uma opção específica para um dispositivo identificado pelo seu endereço IP.
 
-        Parâmetros:
-            ip (str): O endereço IP do dispositivo.
-            option (str): A opção a ser definida.
-            value (str): O valor a ser definido para a opção.
+    Parâmetros:
+        ip (str): O endereço IP do dispositivo.
+        option (str): A opção a ser definida.
+        value (str): O valor a ser definido para a opção.
 
-        Retorna:
-            JSON: Uma resposta JSON confirmando o sucesso da operação.
-        """
+    Retorna:
+        JSON: Uma resposta JSON confirmando o sucesso da operação.
+    """
     try:
         serve.check_method_option(ip, option, request.method)
 

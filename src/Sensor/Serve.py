@@ -1,19 +1,19 @@
 import threading
 import time
 from Sensor import Sensor
-import Screen
+import View
 
 
 def iniciar_conexao(sensor: Sensor) -> None:
-    print((Screen.get_paint_color() + "conectando ao servidor...").center(170))
+    print((View.get_paint_color() + "conectando ao servidor...").center(170))
     try:
         sensor.connectBroker()
         threading.Thread(target=receive_and_respond, args=[sensor]).start()
         threading.Thread(target=mod_continuo, args=[sensor]).start()
-        Screen.get_clear_prompt()
+        View.get_clear_prompt()
     except RuntimeError as e:
-        Screen.get_clear_prompt()
-        Screen.get_report_error(e.__str__())
+        View.get_clear_prompt()
+        View.get_report_error(e.__str__())
 
 
 def receive_and_respond(sensor: Sensor) -> None:

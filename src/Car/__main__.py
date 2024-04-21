@@ -1,11 +1,11 @@
 from Car import Car
 import Serve
-import Screen
+import View
 import User
 
 
 def main() -> None:
-    Screen.get_clear_prompt()
+    View.get_clear_prompt()
     car: Car = Car()
 
     Serve.iniciar_conexao(car)
@@ -17,11 +17,11 @@ def main() -> None:
             User.get_option(user_choice, car)
             user_choice: int = User.get_main_manu_entry(car)
     except KeyboardInterrupt:
-        Screen.get_clear_prompt()
+        View.get_clear_prompt()
         car.disconnectBroker()
         return
 
-    Screen.get_clear_prompt()
+    View.get_clear_prompt()
     car.disconnectBroker()
 
 
