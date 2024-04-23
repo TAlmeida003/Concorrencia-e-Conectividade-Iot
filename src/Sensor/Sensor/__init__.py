@@ -21,7 +21,8 @@ class Sensor:
                                                                 ("desligar", True, "POST"),
                                                                 ("temperatura-atual", False, "GET"),
                                                                 ("umidade-atual", False, "GET"),
-                                                                ("reiniciar", True, "POST")]
+                                                                ("reiniciar", True, "POST"),
+                                                                ("definir-nome", True, "POST")]
         self.__exe_serve_atual__: str = ""
 
         # Inicialização das conexões TCP e UDP

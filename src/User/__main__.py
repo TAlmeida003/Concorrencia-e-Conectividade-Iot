@@ -3,6 +3,7 @@ import View
 
 def main() -> None:
     try:
+        View.get_clear_prompt()
         View.print_menu_main()
         user_choice: str = input((" " * 40) + "* Informe a opção desejada: ")
 
@@ -25,7 +26,9 @@ def get_option(user_choice: str) -> None:
     elif user_choice == "2":
         ip = input((" " * 40) + "* Informe o Endereço IP: ")
         View.get_clear_prompt()
-        View.print_device_options(ip)
+        while View.print_device_options(ip):
+            pass
+        View.get_clear_prompt()
     else:
         View.get_clear_prompt()
         View.get_report_error("Opção inválida! Tente novamente.")

@@ -30,7 +30,7 @@ class Car:
         self.ip: str = socket.gethostbyname(socket.gethostname())
         self.server_option: list[tuple[str, bool, str]] = [("ligar", True, "POST"), ("desligar", True, "POST"),
                                                            ("get-velocidade", False, "GET"),
-                                                           ("set-velocidade", True, "POST"),
+                                                           ("definir-velocidade", True, "POST"),
                                                            ("travar-porta", True, "POST"),
                                                            ("destravar-porta", True, "POST"),
                                                            ("ir-para-frente", True, "POST"),

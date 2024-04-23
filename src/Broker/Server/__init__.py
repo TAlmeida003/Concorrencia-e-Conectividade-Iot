@@ -62,7 +62,7 @@ class Server:
                     time.sleep(0.1)
                 return self.__dictConnectDevices__[ip]["data_udp"]
         except socket.timeout:
-            raise RuntimeError("Tempo limite excedido")
+            raise RuntimeError("Tempo limite de resposta excedido")
         except socket.error:
             self.__dictConnectDevices__[ip]["socket"].close()
             self.__dictConnectDevices__.pop(ip)
@@ -132,6 +132,6 @@ class Server:
                 if option == i[0] and method != i[2]:
                     raise RuntimeError("Esta rota aceita apenas solicitações " + i[2])
                 elif option == "data" or option == "teste" or option == "opcoes":
-                    raise RuntimeError("Opções indisponíveis para o usuário.")
+                    raise RuntimeError("Opção indisponíveis para o usuário.")
         except KeyError:
             raise RuntimeError("Nao existe nenhum dispositivo com esse ip.")

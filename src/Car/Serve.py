@@ -113,6 +113,7 @@ def get_option_Serve_udp(car: Car) -> None:
                     msg["descript"] = f"Velocidade: {car.get_speed()}Km/h."
                 elif car.current_server_exe == car.server_option[13][0]:  # status
                     msg = car.get_status()
+                    msg["success"] = True
                 else:  # distancia
                     msg["descript"] = f"Carro se movimento {round(car.get_distance(), 1)}m do pronto de inicio."
 
