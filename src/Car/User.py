@@ -28,17 +28,18 @@ def display_main_menu(car: Car) -> None:
     movimento = "Ativa" if car.moving else "Desativado"
     colisao = "Detectada" if car.moving else "--------"
 
-
     View.get_baseboard()
     print(f"| Dispositivo: Carro           Modelo: {car.__model__}           IP: {car.ip: ^15} |".center(170))
     print(f"| Broker: {conexao: ^8}     Velocidade: {car.speed: ^3}Km/h      Estado do carro: {state: ^10} |"
           f"".center(170))
     print(f"| Marca: {car.__brand__}                  Cor: {car.color: ^5}                      Ano: {car.year: ^4} |"
           f"".center(170))
-    print(f"| Bateria: {car.battery: ^3}%             Gasolina: {round(car.gasoline, 1):^4}L               Porta: {porta: ^10} "
-          f"|".center(170))
-    print(f"| Distancia: {round(car.distance, 2).__str__() + ' m': ^12}     Direção: {car.direction: ^7}    Movimentação: "
-          f"{movimento :^11} |".center(170))
+    print(
+        f"| Bateria: {car.battery: ^3}%             Gasolina: {round(car.gasoline, 1):^4}L               Porta: {porta: ^10} "
+        f"|".center(170))
+    print(
+        f"| Distancia: {round(car.distance, 2).__str__() + ' m': ^12}     Direção: {car.direction: ^7}    Movimentação: "
+        f"{movimento :^11} |".center(170))
     print(f"| Colisão: {colisao: ^9}                 Ultima requisição do broker: {car.current_server_exe: ^9} |"
           f"".center(170))
 
@@ -131,5 +132,3 @@ def get_option(user_choice: int, car: Car) -> None:
     except RuntimeError as e:
         View.get_clear_prompt()
         View.get_report_error(e.__str__())
-
-

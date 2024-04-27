@@ -11,7 +11,7 @@ def is_exit_option(user_choice: int) -> bool:
 
 
 def check_option_main_menu(user_choice: int) -> None:
-    if user_choice < 1 or user_choice > 8:
+    if user_choice < 1 or user_choice > 9:
         raise RuntimeError("OPÇÃO INVALIDA")
 
 
@@ -37,18 +37,20 @@ def display_main_menu(sensor: Sensor) -> None:
           f" Ultima requisição do broker: {sensor.__exe_serve_atual__:^9} |".center(170))
     View.get_baseboard()
 
-    list_option: list[str] = ["LIGAR SENSOR", "DESLIGAR SENSOR", "CONECTAR AO BROKER", "DESCONECTAR DO BROKER",
+    list_options: list[str] = ["LIGAR SENSOR", "DESLIGAR SENSOR", "CONECTAR AO BROKER", "DESCONECTAR DO BROKER",
                               "ALTERAR O NOME DO SENSOR", "MUDAR TEMPERATURA DO SENSOR",
                               "MUDAR UMIDADE DO SENSOR", "ENCERRAR PROGRAMA"]
 
     print("\n", (("=" * 15) + " MENU PRINCIPAL " + ("=" * 15)).center(170), "\n")
     View.get_baseboard()
     print()
-    print(" " * 52, f"[ 1 ] - {list_option[0]:^9}               [ 2 ] - {list_option[1]:^9}", "\n" * 2)
-    print(" " * 52, f"[ 3 ] - {list_option[2]:^9}         [ 4 ] - {list_option[3]:^9}", "\n" * 2)
-    print(" " * 52, f"[ 5 ] - {list_option[4]:^9}   [ 6 ] - {list_option[5]:^9}", "\n" * 2)
-    print(" " * 52, f"[ 7 ] - {list_option[6]:^9}    [ 8 ] - {list_option[7]:^9}", "\n" * 2)
+    print(" " * 52, f"[ 1 ] - {list_options[0]:^9}               [ 2 ] - {list_options[1]:^9}", "\n" * 2)
+    print(" " * 52, f"[ 3 ] - {list_options[2]:^9}         [ 4 ] - {list_options[3]:^9}", "\n" * 2)
+    print(" " * 52, f"[ 5 ] - {list_options[4]:^9}   [ 6 ] - {list_options[5]:^9}", "\n" * 2)
+    print(" " * 52, f"[ 7 ] - {list_options[6]:^9}    [ 8 ] - {list_options[7]:^9}", "\n" * 2)
     View.get_baseboard()
+
+    print(f"Digite [ {len(list_options) + 1} ] para ver dados recebidos pelo servidor.".center(170))
     print(" " * 52, "* INFORME QUAL A OPÇÃO DESEJADA: ", end="")
 
 
@@ -96,7 +98,32 @@ def get_option(user_choice: int, sensor: Sensor) -> None:
                 sensor.setHumidity(float(input()))
             except ValueError:
                 raise RuntimeError("Campo destinado a números")
+        elif user_choice == 9:
+            pass
+
         View.get_clear_prompt()
     except RuntimeError as e:
         View.get_clear_prompt()
         View.get_report_error(e.__str__())
+
+
+def get_request(sensor: Sensor):
+    View.get_clear_prompt()
+    View.get_baseboard()
+
+    print(f"| Dispositivo: Sensor       Nome: {sensor.__name__: ^7}          IP: {sensor.__IP__: ^15} |".center(170))
+    print(f"| Broker: {'online':^8}         Temperatura: {round(sensor.__temperature__, 1):^4}ºC       "
+          f"   Umidade: {round(sensor.__humidity__, 1): ^4}% |".center(170))
+    print(f"| Estado do sensor: {'ligado':^10} "
+          f" Ultima requisição do broker: {sensor.__exe_serve_atual__:^9} |".center(170))
+    View.get_baseboard()
+    print("\n", (("=" * 15) + " DADOS RECEBIDOS DO SERVIDOR " + ("=" * 15)).center(170), "\n")
+    View.get_baseboard()
+    print()
+    print(f"|{'IP': ^15}|{'Nome': ^15}|{'Temperatura': ^15}|{'Umidade': ^15}|".center(170))
+    View.get_baseboard()
+    print(f"|{sensor.__IP__: ^15}|{sensor.__name__: ^15}|{round(sensor.__temperature__, 1): ^15}|"
+          f"{round(sensor.__humidity__, 1): ^15}|".center(170))
+    View.get_baseboard()
+    print(f"Digite ENTER para voltar ao menu principal.".center(170))
+    return input()

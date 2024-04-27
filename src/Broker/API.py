@@ -36,6 +36,11 @@ def get_devices():
     return jsonify(serve.get_list_devices())
 
 
+@app.route('/', methods=['GET'])  # GET Listar dispositivos
+def get_home():
+    return "<h1>API de gerenciamento de dispositivos</h1>"
+
+
 @app.route('/devices/<string:ip>', methods=['GET'])  # GET dispositivo
 def get_device(ip: str):
     """

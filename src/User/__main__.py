@@ -28,7 +28,6 @@ def get_option(user_choice: str) -> None:
         View.get_clear_prompt()
         while View.print_device_options(ip):
             pass
-        View.get_clear_prompt()
     else:
         View.get_clear_prompt()
         View.get_report_error("Opção inválida! Tente novamente.")

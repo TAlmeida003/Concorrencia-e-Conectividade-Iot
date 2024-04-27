@@ -20,9 +20,9 @@ def iniciar_conexao(car: Car) -> None:
 def receive_and_respond(car: Car) -> None:
     while True:
         try:
-            msg: dict = eval(car.receiveMessage())
+            msg: dict = car.receiveMessage()
             get_option_Serve_tcp(msg, car)
-        except RuntimeError as e:
+        except RuntimeError:
             break
 
 

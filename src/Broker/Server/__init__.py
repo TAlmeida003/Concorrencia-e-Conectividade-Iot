@@ -1,11 +1,15 @@
 import socket
 import threading
 import time
+import os
+import sys
 from threading import Lock
 
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(parent_dir)
+from config import PORT_TCP, PORT_UDP
+
 HOST: str = socket.gethostbyname(socket.gethostname())
-PORT_TCP: int = 5001
-PORT_UDP: int = 5000
 
 
 class Server:
@@ -33,7 +37,7 @@ class Server:
     def thread_connect_device(self) -> None:
         while True:
             device_socket, addr = self.__serve_tcp__.accept()
-            ip: str = str(device_socket.getpeername()[1])
+            ip: str = str(device_socket.getpeername()[0])
 
             dict_device: dict = {"ip": ip, "socket": device_socket, "data_udp": {}, "opcoes": {}}
             self.__dictConnectDevices__[ip] = dict_device
@@ -42,31 +46,50 @@ class Server:
             threading.Thread(target=self.get_recv_udp, args=[ip]).start()
 
     def get_device_option(self, ip: str, option: str, value: str = "") -> dict:
-        pack_msg: dict = {"option": option, "value": value}
         try:
+            pack_msg: dict = {"option": option, "value": value}
             return self.get_dict(pack_msg.__str__(), ip)
         except KeyError:
             raise RuntimeError("Nao existe nenhum dispositivo com esse ip.")
 
     def get_dict(self, option: str, ip: str) -> dict:
         try:
-            with self.lock:
-                self.__dictConnectDevices__[ip]["socket"].send(option.encode())
+            self.is_connect(ip)
 
-                self.__dictConnectDevices__[ip]["socket"].settimeout(30)
-                if self.is_command_utp(option, ip):
-                    return eval(self.__dictConnectDevices__[ip]["socket"].recv(2048).decode('utf-8'))
+            self.__dictConnectDevices__[ip]["socket"].send(option.encode())
+            self.__dictConnectDevices__[ip]["socket"].settimeout(5)
+            if self.is_command_utp(option, ip):
+                data = self.__dictConnectDevices__[ip]["socket"].recv(2048).decode('utf-8')
+                if data == "":
+                    raise RuntimeError("")
+                return eval(data)
 
-                self.__dictConnectDevices__[ip]["flag_data"] = False
-                while not self.__dictConnectDevices__[ip]["flag_data"]:
-                    time.sleep(0.1)
-                return self.__dictConnectDevices__[ip]["data_udp"]
+            self.__dictConnectDevices__[ip]["flag_data"] = False
+            while not self.__dictConnectDevices__[ip]["flag_data"]:
+                time.sleep(0.1)
+            return self.__dictConnectDevices__[ip]["data_udp"]
+
         except socket.timeout:
+            self.__dictConnectDevices__[ip]["socket"].close()
+            self.__dictConnectDevices__.pop(ip)
             raise RuntimeError("Tempo limite de resposta excedido")
-        except socket.error:
+        except (socket.error, RuntimeError) as e:
+            print(e)
             self.__dictConnectDevices__[ip]["socket"].close()
             self.__dictConnectDevices__.pop(ip)
             raise RuntimeError("Nao foi possível acessar o dispositivo.")
+
+    def is_connect(self, ip_device) -> bool:
+        try:
+            pack_msg: dict = {"option": "teste", "value": ""}
+            self.__dictConnectDevices__[ip_device]["socket"].send(pack_msg.__str__().encode())
+            if self.__dictConnectDevices__[ip_device]["socket"].recv(2048).decode() == "":
+                raise socket.error
+            return True
+        except socket.error:
+            self.__dictConnectDevices__[ip_device]["socket"].close()
+            self.__dictConnectDevices__.pop(ip_device)
+            return False
 
     def get_recv_udp(self, ip: str) -> None:
         while True:
@@ -76,8 +99,11 @@ class Server:
                 self.__dictConnectDevices__[ip]["data_udp"] = eval(data)
                 self.__dictConnectDevices__[ip]["flag_data"] = True
             except socket.error:
+                self.__dictConnectDevices__[ip]["flag_data"] = False
                 self.__dictConnectDevices__[ip]["socket"].close()
                 self.__dictConnectDevices__.pop(ip)
+                break
+            except KeyError:
                 break
 
     def get_device(self, ip: str) -> dict:
@@ -94,18 +120,6 @@ class Server:
             if self.is_connect(ip_device):
                 list_connect.append(ip_device)
         return list_connect
-
-    def is_connect(self, ip_device) -> bool:
-        try:
-            with self.lock:
-                pack_msg: dict = {"option": "teste", "value": ""}
-                self.__dictConnectDevices__[ip_device]["socket"].send(pack_msg.__str__().encode())
-                self.__dictConnectDevices__[ip_device]["socket"].recv(2048)
-                return True
-        except socket.error:
-            self.__dictConnectDevices__[ip_device]["socket"].close()
-            self.__dictConnectDevices__.pop(ip_device)
-            return False
 
     def end(self) -> None:
         self.__serve_tcp__.close()

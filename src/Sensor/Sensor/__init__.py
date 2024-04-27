@@ -1,8 +1,10 @@
+import os
 import socket
+import sys
 
-HOST: str = '192.168.25.105'
-PORT_TCP: int = 5001
-PORT_UDP: int = 5000
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(parent_dir)
+from config import HOST, PORT_TCP, PORT_UDP
 
 
 class Sensor:
@@ -14,7 +16,7 @@ class Sensor:
 
         # Atributos de conexão
         self.__connected__: bool = False
-        self.__name__: str = "SETNA05"
+        self.__name__: str = "SETNA00"
         self.__tag__: str = "sensor"
         self.__IP__: str = socket.gethostbyname(socket.gethostname())
         self.__server_options__: list[tuple[str, bool, str]] = [("ligar", True, "POST"),
@@ -48,7 +50,9 @@ class Sensor:
         self.__connected__ = False
 
     def sendMessageUDP(self, data: str) -> None:
-        # Enviar mensagem via UDP
+        if not self.__connected__:
+            raise RuntimeError("Broker desconectado")
+
         try:
             self.__udp_connection__.sendto(data.encode('utf-8'), (HOST, PORT_UDP))
         except socket.error:
@@ -56,17 +60,25 @@ class Sensor:
             raise RuntimeError("Broker desconectado")
 
     def sendMessageTCP(self, data: str) -> None:
+        if not self.__connected__:
+            raise RuntimeError("Broker desconectado")
+
         try:
             self.__tcp_connection__.send(data.encode('utf-8'))
         except socket.error:
             self.disconnectBroker()
             raise RuntimeError("Broker desconectado")
 
-    def receiveMessage(self) -> str:
-        # Receber mensagem via TCP
+    def receiveMessage(self) -> dict:
+        if not self.__connected__:
+            raise RuntimeError("Broker desconectado")
+
         try:
             msg = self.__tcp_connection__.recv(2048).decode('utf-8')
-            return msg
+            if msg == "":
+                self.disconnectBroker()
+                raise RuntimeError("Broker desconectado")
+            return eval(msg)
         except socket.error:
             self.disconnectBroker()
             raise RuntimeError("Broker desconectado")

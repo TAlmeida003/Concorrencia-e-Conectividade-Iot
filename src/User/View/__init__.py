@@ -1,8 +1,11 @@
 import os
+import sys
+
 import requests
 
-HOST = '192.168.25.105'
-PORT = '5002'
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(parent_dir)
+from config import HOST_HTTP
 
 
 def get_report_error(text: str) -> None:
@@ -48,7 +51,7 @@ def get_baseboard() -> None:
 
 def print_device_options(ip: str) -> bool:
     try:
-        dict_device = requests.get(f'http://{HOST}:{PORT}/devices/{ip}')
+        dict_device = requests.get(f'{HOST_HTTP}/devices/{ip}')
 
         if dict_device.status_code != 200 and dict_device.status_code != 404:
             get_clear_prompt()
@@ -75,7 +78,7 @@ def print_device_options(ip: str) -> bool:
               + dict_device.json()['name']: ^86}|".center(168))
     pular_linha(2)
 
-    list_options = requests.get(f'http://{HOST}:{PORT}/devices/{ip}/options').json()
+    list_options = requests.get(f'{HOST_HTTP}/devices/{ip}/options').json()
     print_options_devices(list_options)
 
     pular_linha(2)
@@ -90,14 +93,15 @@ def print_device_options(ip: str) -> bool:
             get_report_error("Opção inválida! Tente novamente.")
             return True
         elif option == len(list_options) + 1:
+            get_clear_prompt()
             return False
         elif 'definir' in str(list_options[int(option) - 1][0]).replace("-", " "):
             value = input((" " * 40) + "* Informe o valor desejado: ")
-            dict_option = requests.post(f'http://{HOST}:{PORT}/devices/{ip}/{list_options[int(option) - 1][0]}/{value}')
+            dict_option = requests.post(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}/{value}')
         elif list_options[int(option) - 1][1]:
-            dict_option = requests.post(f'http://{HOST}:{PORT}/devices/{ip}/{list_options[int(option) - 1][0]}')
+            dict_option = requests.post(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}')
         else:
-            dict_option = requests.get(f'http://{HOST}:{PORT}/devices/{ip}/{list_options[int(option) - 1][0]}')
+            dict_option = requests.get(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}')
 
         get_clear_prompt()
         if dict_option.status_code == 200:
@@ -136,7 +140,7 @@ def cabecalho() -> None:
 
 def topico(topico: str) -> None:
     print()
-    print(f"=================== {topico : ^15} ===================".center(170))
+    print(f"=================== {topico: ^15} ===================".center(170))
     print()
 
 
@@ -145,7 +149,7 @@ def print_device_list() -> None:
     get_clear_prompt()
 
     try:
-        list_ips = requests.get(f'http://{HOST}:{PORT}/devices').json()
+        list_ips = requests.get(f'{HOST_HTTP}/devices').json()
     except requests.exceptions.ConnectionError:
         get_report_error("Erro ao conectar com o servidor.")
         return
@@ -159,7 +163,7 @@ def print_device_list() -> None:
     pular_linha(1)
 
     for ip_device in list_ips:
-        dict_device: dict = requests.get(f'http://{HOST}:{PORT}/devices/{ip_device}').json()
+        dict_device: dict = requests.get(f'{HOST_HTTP}/devices/{ip_device}').json()
 
         print(f"|{('_' * 70): ^86}|".center(168))
         pular_linha(1)
@@ -191,9 +195,7 @@ def print_menu_main() -> None:
     print("\033[1;97m")
     cabecalho()
 
-    print()
     topico("Menu Principal")
-    print()
     get_baseboard()
     get_display_option("1", "Listar Dispositivos")
     get_display_option("2", "Acessar Dispositivo")

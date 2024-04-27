@@ -19,7 +19,7 @@ def iniciar_conexao(sensor: Sensor) -> None:
 def receive_and_respond(sensor: Sensor) -> None:
     while True:
         try:
-            msg: dict = eval(sensor.receiveMessage())
+            msg: dict = sensor.receiveMessage()
             get_option_Serve(msg, sensor)
         except RuntimeError as e:
             break
@@ -33,33 +33,25 @@ def get_option_Serve(user_choice: dict, sensor: Sensor) -> None:
         if user_choice["option"] == sensor.__server_options__[0][0]:  # ligar
             sensor.turnOn()
             resposta["descript"] = "Sensor ligado."
-
         elif user_choice["option"] == sensor.__server_options__[1][0]:  # desligar
             sensor.turnOff()
             resposta["descript"] = "Sensor desligado."
-
         elif (user_choice["option"] == sensor.__server_options__[2][0] or
               user_choice['option'] == sensor.__server_options__[3][0]):
             return
-
         elif user_choice["option"] == sensor.__server_options__[4][0]:  # reiniciar
             sensor.restart()
             resposta["descript"] = "Sensor reiniciado."
-
         elif user_choice["option"] == sensor.__server_options__[5][0]:  # nome
             sensor.setName(user_choice["value"])
             resposta["descript"] = "Nome alterado."
-
         elif user_choice["option"] == "data":
             resposta = sensor.get_info()
             resposta["success"] = True
-
         elif user_choice["option"] == "opcoes":
             resposta = {"option": sensor.get_list_options(), "success": True}
-
         elif user_choice["option"] == "teste":
             resposta = {"success": True, "option": "teste", "descript": "Teste de comunicação"}
-
     except RuntimeError as e:
         resposta = {"success": False, "code": 400, "descript": e.__str__()}
 
@@ -73,7 +65,7 @@ def mod_continuo(sensor: Sensor) -> None:
                 msg: dict = {"success": True, "IP": sensor.__IP__, "descript": ""}
 
                 if sensor.__exe_serve_atual__ == sensor.__server_options__[2][0]:
-                    msg["descript"] = f"Temperatura atual: {sensor.get_temperature()}ºC."
+                    msg["descript"] = f"Temperatura atual: {sensor.get_temperature()}°C."
                 else:
                     msg["descript"] = f"Umidade atual: {sensor.get_humidity()}%."
                 sensor.sendMessageUDP(msg.__str__())

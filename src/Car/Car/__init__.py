@@ -1,10 +1,12 @@
+import os
 import socket
+import sys
 import threading
 import time
 
-HOST: str = '192.168.25.105'
-PORT_TCP: int = 5001
-PORT_UDP: int = 5000
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(parent_dir)
+from config import HOST, PORT_TCP, PORT_UDP
 
 
 class Car:
@@ -66,6 +68,9 @@ class Car:
 
     def sendMessageUDP(self, data: str) -> None:
         # Send message via UDP
+        if not self.connected:
+            raise RuntimeError("Broker desconectado")
+
         try:
             self.udp_connection.sendto(data.encode('utf-8'), (HOST, PORT_UDP))
         except socket.error:
@@ -73,17 +78,25 @@ class Car:
             raise RuntimeError("Broker desconectado")
 
     def sendMessageTCP(self, data: str) -> None:
+        if not self.connected:
+            raise RuntimeError("Broker desconectado")
+
         try:
             self.tcp_connection.send(data.encode('utf-8'))
         except socket.error:
             self.disconnectBroker()
             raise RuntimeError("Broker desconectado")
 
-    def receiveMessage(self) -> str:
-        # Receive message via TCP
+    def receiveMessage(self) -> dict:
+        if not self.connected:
+            raise RuntimeError("Broker desconectado")
+
         try:
             msg = self.tcp_connection.recv(2048).decode('utf-8')
-            return msg
+            if msg == "":
+                self.disconnectBroker()
+                raise RuntimeError("Broker desconectado")
+            return eval(msg)
         except socket.error:
             self.disconnectBroker()
             raise RuntimeError("Broker desconectado")
@@ -179,13 +192,15 @@ class Car:
         self.speed = value
 
     def measure_distance(self):
-        while self.moving:
+        while self.moving and self.connected:
             speed_ms = self.speed * 1000 / 3600
             if self.direction == "frente":
                 self.distance += speed_ms
             else:
                 self.distance -= speed_ms
             time.sleep(1)
+        if self.connected:
+            self.stop()
 
     def start_movement(self) -> None:
         if self.moving:
