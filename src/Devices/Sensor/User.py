@@ -1,6 +1,13 @@
-import View
+import os
+import sys
+
 from Sensor import Sensor
 import Serve
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+
+import View
 
 
 def is_exit_option(user_choice: int) -> bool:
@@ -99,7 +106,7 @@ def get_option(user_choice: int, sensor: Sensor) -> None:
             except ValueError:
                 raise RuntimeError("Campo destinado a números")
         elif user_choice == 9:
-            pass
+            get_request(sensor)
 
         View.get_clear_prompt()
     except RuntimeError as e:
@@ -108,22 +115,21 @@ def get_option(user_choice: int, sensor: Sensor) -> None:
 
 
 def get_request(sensor: Sensor):
-    View.get_clear_prompt()
-    View.get_baseboard()
+    conexao = "online" if sensor.__connected__ else "offline"
+    state = "ligado" if sensor.__state__ else "desligado"
 
-    print(f"| Dispositivo: Sensor       Nome: {sensor.__name__: ^7}          IP: {sensor.__IP__: ^15} |".center(170))
-    print(f"| Broker: {'online':^8}         Temperatura: {round(sensor.__temperature__, 1):^4}ºC       "
-          f"   Umidade: {round(sensor.__humidity__, 1): ^4}% |".center(170))
-    print(f"| Estado do sensor: {'ligado':^10} "
-          f" Ultima requisição do broker: {sensor.__exe_serve_atual__:^9} |".center(170))
+    View.get_clear_prompt()
+
     View.get_baseboard()
     print("\n", (("=" * 15) + " DADOS RECEBIDOS DO SERVIDOR " + ("=" * 15)).center(170), "\n")
     View.get_baseboard()
     print()
-    print(f"|{'IP': ^15}|{'Nome': ^15}|{'Temperatura': ^15}|{'Umidade': ^15}|".center(170))
+
+    print(f"|{'Requisição': ^15}|{'Nome': ^15}|{'Estado': ^15}|{'Conexão': ^15}|{'UDP Dados': ^15}|".center(170))
     View.get_baseboard()
-    print(f"|{sensor.__IP__: ^15}|{sensor.__name__: ^15}|{round(sensor.__temperature__, 1): ^15}|"
-          f"{round(sensor.__humidity__, 1): ^15}|".center(170))
+    print(f"|{sensor.__exe_serve_atual__:^15}|{sensor.__name__:^15}|{state:^15}|"
+          f"{conexao:^15}|{'':^15}|".center(170))
     View.get_baseboard()
+    print("\n" * 2)
     print(f"Digite ENTER para voltar ao menu principal.".center(170))
     return input()

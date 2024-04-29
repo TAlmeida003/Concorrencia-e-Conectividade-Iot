@@ -1,8 +1,15 @@
+import os
+import sys
 import threading
 import time
 from Sensor import Sensor
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+
 import View
 
+dado_udp: bool
 
 def iniciar_conexao(sensor: Sensor) -> None:
     print((View.get_paint_color() + "conectando ao servidor...").center(170))
@@ -21,7 +28,7 @@ def receive_and_respond(sensor: Sensor) -> None:
         try:
             msg: dict = sensor.receiveMessage()
             get_option_Serve(msg, sensor)
-        except RuntimeError as e:
+        except RuntimeError:
             break
 
 

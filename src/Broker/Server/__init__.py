@@ -16,7 +16,6 @@ class Server:
 
     def __init__(self) -> None:
         self.__dictConnectDevices__: dict = {}
-
         self.__serve_udp__ = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.__serve_tcp__ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lock: Lock = Lock()

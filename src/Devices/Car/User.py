@@ -1,6 +1,12 @@
+import os
+import sys
+
 from Car import Car
-import View
 import Serve
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+import View
 
 
 def is_exit_option(user_choice: int) -> bool:
@@ -22,7 +28,7 @@ def is_a_valid_main_menu_option(user_choice: int) -> bool:
 
 
 def display_main_menu(car: Car) -> None:
-    conexao = "Online" if car.connected else "Offline"
+    conexao = "Online" if car.__connected__ else "Offline"
     state = "Ligado" if car.state else "Desligado"
     porta = "Travada" if car.door_locked else "Destravada"
     movimento = "Ativa" if car.moving else "Desativado"

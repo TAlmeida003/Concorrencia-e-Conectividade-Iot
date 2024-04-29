@@ -88,6 +88,7 @@
 <h2> Execução do Projeto</h2>
 <div align="justify">
 
+Para iniciar o projeto, 
 </div>
 </div>
 

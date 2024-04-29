@@ -1,12 +1,16 @@
+import os
+import sys
 import threading
 import time
-
-import View
 from Car import Car
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+import View
 
 
 def iniciar_conexao(car: Car) -> None:
-    print("conectando ao servidor...".center(170))
+    print((View.get_paint_color() + "conectando ao servidor...").center(170))
     try:
         car.connectBroker()
         threading.Thread(target=receive_and_respond, args=[car]).start()

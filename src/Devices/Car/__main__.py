@@ -1,7 +1,13 @@
+import os
+import sys
 from Car import Car
 import Serve
-import View
 import User
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+
+import View
 
 
 def main() -> None:

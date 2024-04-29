@@ -6,11 +6,12 @@ import time
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(parent_dir)
-from config import HOST, PORT_TCP, PORT_UDP
+from ConnectionDevice import ConnectionDevice
 
 
-class Car:
+class Car(ConnectionDevice):
     def __init__(self) -> None:
+        super().__init__()
         self.__model__: str = "Toyota"
         self.__brand__: str = "Corolla"
         self.color: str = "Preto"
@@ -20,7 +21,6 @@ class Car:
 
         self.speed: int = 0
         self.state: bool = False
-        self.connected: bool = False
         self.battery: int = 100
         self.gasoline: float = 22
         self.door_locked: bool = False
@@ -44,62 +44,6 @@ class Car:
                                                            ("medir-distancia", False, "GET"),
                                                            ("status", False, "GET")]
         self.current_server_exe: str = ""
-
-        self.tcp_connection: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.udp_connection: socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    def connectBroker(self) -> None:
-        # Connect to broker server
-        try:
-            if not self.connected:
-                self.tcp_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.tcp_connection.connect((HOST, PORT_TCP))
-                self.connected = True
-            else:
-                raise RuntimeError("Broker já conectado.")
-        except socket.error:
-            self.disconnectBroker()
-            raise RuntimeError("Falha ao conectar ao Broker.")
-
-    def disconnectBroker(self) -> None:
-        # Disconnect from broker server
-        self.tcp_connection.close()
-        self.connected = False
-
-    def sendMessageUDP(self, data: str) -> None:
-        # Send message via UDP
-        if not self.connected:
-            raise RuntimeError("Broker desconectado")
-
-        try:
-            self.udp_connection.sendto(data.encode('utf-8'), (HOST, PORT_UDP))
-        except socket.error:
-            self.disconnectBroker()
-            raise RuntimeError("Broker desconectado")
-
-    def sendMessageTCP(self, data: str) -> None:
-        if not self.connected:
-            raise RuntimeError("Broker desconectado")
-
-        try:
-            self.tcp_connection.send(data.encode('utf-8'))
-        except socket.error:
-            self.disconnectBroker()
-            raise RuntimeError("Broker desconectado")
-
-    def receiveMessage(self) -> dict:
-        if not self.connected:
-            raise RuntimeError("Broker desconectado")
-
-        try:
-            msg = self.tcp_connection.recv(2048).decode('utf-8')
-            if msg == "":
-                self.disconnectBroker()
-                raise RuntimeError("Broker desconectado")
-            return eval(msg)
-        except socket.error:
-            self.disconnectBroker()
-            raise RuntimeError("Broker desconectado")
 
     def turnOn(self) -> None:
         # Ligar sensor
@@ -192,14 +136,14 @@ class Car:
         self.speed = value
 
     def measure_distance(self):
-        while self.moving and self.connected:
+        while self.moving and self.__connected__:
             speed_ms = self.speed * 1000 / 3600
             if self.direction == "frente":
                 self.distance += speed_ms
             else:
                 self.distance -= speed_ms
             time.sleep(1)
-        if self.connected:
+        if self.__connected__:
             self.stop()
 
     def start_movement(self) -> None:

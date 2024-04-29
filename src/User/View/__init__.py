@@ -86,7 +86,7 @@ def print_device_options(ip: str) -> bool:
     print(f"Digite [ {len(list_options) + 1} ] para voltar ao menu principal.".center(170))
 
     try:
-        option = int(input((" " * 40) + "* Informe a opção desejada: "))
+        option = int(input((" " * 40) + "* Informe a opção desejada: ").replace(" ", ""))
 
         if option > len(list_options) + 1 or option < 1:
             get_clear_prompt()
@@ -96,7 +96,7 @@ def print_device_options(ip: str) -> bool:
             get_clear_prompt()
             return False
         elif 'definir' in str(list_options[int(option) - 1][0]).replace("-", " "):
-            value = input((" " * 40) + "* Informe o valor desejado: ")
+            value = input((" " * 40) + "* Informe o valor desejado: ").replace(" ", "")
             dict_option = requests.post(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}/{value}')
         elif list_options[int(option) - 1][1]:
             dict_option = requests.post(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}')
