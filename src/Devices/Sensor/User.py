@@ -8,7 +8,7 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
 import View
-
+visual: bool = False
 
 def is_exit_option(user_choice: int) -> bool:
     OPTION_EXIT: int = 8
@@ -81,6 +81,7 @@ def get_main_manu_entry(sensor: Sensor) -> int:
 
 
 def get_option(user_choice: int, sensor: Sensor) -> None:
+    global visual
     try:
         if user_choice == 1:  # ligar
             sensor.turnOn()
@@ -106,7 +107,10 @@ def get_option(user_choice: int, sensor: Sensor) -> None:
             except ValueError:
                 raise RuntimeError("Campo destinado a números")
         elif user_choice == 9:
+            sensor.visual = True
             get_request(sensor)
+            input()
+            sensor.visual = False
 
         View.get_clear_prompt()
     except RuntimeError as e:
@@ -115,10 +119,12 @@ def get_option(user_choice: int, sensor: Sensor) -> None:
 
 
 def get_request(sensor: Sensor):
+    View.get_clear_prompt()
     conexao = "online" if sensor.__connected__ else "offline"
     state = "ligado" if sensor.__state__ else "desligado"
-
-    View.get_clear_prompt()
+    udp = "ativado" if (sensor.is_continuous_mod() and sensor.__connected__) else "desativado"
+    temperatura = round(sensor.get_temperature(), 1).__str__() if sensor.__state__ else "-.-"
+    umidade = round(sensor.get_humidity(), 1).__str__() if sensor.__state__ else "-.-"
 
     View.get_baseboard()
     print("\n", (("=" * 15) + " DADOS RECEBIDOS DO SERVIDOR " + ("=" * 15)).center(170), "\n")
@@ -128,8 +134,11 @@ def get_request(sensor: Sensor):
     print(f"|{'Requisição': ^15}|{'Nome': ^15}|{'Estado': ^15}|{'Conexão': ^15}|{'UDP Dados': ^15}|".center(170))
     View.get_baseboard()
     print(f"|{sensor.__exe_serve_atual__:^15}|{sensor.__name__:^15}|{state:^15}|"
-          f"{conexao:^15}|{'':^15}|".center(170))
+          f"{conexao:^15}|{udp:^15}|".center(170))
     View.get_baseboard()
+    print(f"|{'Temperatura': ^15}|{'Umidade': ^15}|{'IP': ^15}|".center(170))
+    View.get_baseboard()
+    print(f"|{temperatura:^15}|{umidade:^15}|".center(170))
+
     print("\n" * 2)
     print(f"Digite ENTER para voltar ao menu principal.".center(170))
-    return input()

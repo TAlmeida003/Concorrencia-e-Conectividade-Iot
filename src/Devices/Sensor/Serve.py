@@ -3,24 +3,26 @@ import sys
 import threading
 import time
 from Sensor import Sensor
-
+from User import get_request
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
-
 import View
 
-dado_udp: bool
 
 def iniciar_conexao(sensor: Sensor) -> None:
     print((View.get_paint_color() + "conectando ao servidor...").center(170))
     try:
-        sensor.connectBroker()
-        threading.Thread(target=receive_and_respond, args=[sensor]).start()
-        threading.Thread(target=mod_continuo, args=[sensor]).start()
+        connect(sensor)
         View.get_clear_prompt()
     except RuntimeError as e:
         View.get_clear_prompt()
         View.get_report_error(e.__str__())
+
+
+def connect(sensor: Sensor) -> None:
+    sensor.connectBroker()
+    threading.Thread(target=receive_and_respond, args=[sensor]).start()
+    threading.Thread(target=mod_continuo, args=[sensor]).start()
 
 
 def receive_and_respond(sensor: Sensor) -> None:
@@ -29,7 +31,18 @@ def receive_and_respond(sensor: Sensor) -> None:
             msg: dict = sensor.receiveMessage()
             get_option_Serve(msg, sensor)
         except RuntimeError:
+            if sensor.visual:
+                get_request(sensor)
+            threading.Thread(target=auto_connect, args=[sensor]).start()
             break
+
+
+def auto_connect(sensor: Sensor) -> None:
+    while not sensor.__connected__ and not sensor.exit:
+        try:
+            connect(sensor)
+        except RuntimeError:
+            time.sleep(5)
 
 
 def get_option_Serve(user_choice: dict, sensor: Sensor) -> None:
@@ -64,9 +77,12 @@ def get_option_Serve(user_choice: dict, sensor: Sensor) -> None:
 
     sensor.sendMessageTCP(resposta.__str__())
 
+    if sensor.visual:
+        get_request(sensor)
+
 
 def mod_continuo(sensor: Sensor) -> None:
-    while True:
+    while sensor.__connected__:
         try:
             while sensor.is_continuous_mod():
                 msg: dict = {"success": True, "IP": sensor.__IP__, "descript": ""}
@@ -76,11 +92,7 @@ def mod_continuo(sensor: Sensor) -> None:
                 else:
                     msg["descript"] = f"Umidade atual: {sensor.get_humidity()}%."
                 sensor.sendMessageUDP(msg.__str__())
-
                 time.sleep(1)
         except RuntimeError as e:
-            if e.__str__() == "Broker desconectado":
-                break
-            else:
-                msg = {"success": False, "code": 400, "descript": e.__str__()}
-                sensor.sendMessageUDP(msg.__str__())
+            msg = {"success": False, "code": 400, "descript": e.__str__()}
+            sensor.sendMessageUDP(msg.__str__())

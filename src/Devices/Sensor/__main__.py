@@ -24,9 +24,10 @@ def main() -> None:
             user_choice: int = User.get_main_manu_entry(sensor)
 
     except KeyboardInterrupt:
-        sensor.disconnectBroker()
+        sensor.end()
+        return
 
-    sensor.disconnectBroker()
+    sensor.end()
 
 
 if __name__ == '__main__':

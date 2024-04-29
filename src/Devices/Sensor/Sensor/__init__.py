@@ -26,6 +26,8 @@ class Sensor(ConnectionDevice):
                                                                 ("reiniciar", True, "POST"),
                                                                 ("definir-nome", True, "POST")]
         self.__exe_serve_atual__: str = ""
+        self.visual: bool = False
+        self.exit: bool = False
 
     def turnOn(self) -> None:
         if self.__state__:
@@ -105,3 +107,7 @@ class Sensor(ConnectionDevice):
                 "opções": self.__server_options__,
                 "tag": self.__tag__
                 }
+
+    def end(self) -> None:
+        self.exit = True
+        self.disconnectBroker()
