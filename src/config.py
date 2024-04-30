@@ -1,5 +1,5 @@
 # Dispositivos e portas de comunicação do sistema
-HOST: str = '192.168.0.104'
+HOST: str = '192.168.0.103'
 PORT_TCP: int = 5001
 PORT_UDP: int = 5000
 
