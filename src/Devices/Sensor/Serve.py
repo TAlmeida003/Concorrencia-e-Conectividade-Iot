@@ -59,6 +59,8 @@ def get_option_Serve(user_choice: dict, sensor: Sensor) -> None:
             resposta["descript"] = "Sensor desligado."
         elif (user_choice["option"] == sensor.__server_options__[2][0] or
               user_choice['option'] == sensor.__server_options__[3][0]):
+            if sensor.visual:
+                get_request(sensor)
             return
         elif user_choice["option"] == sensor.__server_options__[4][0]:  # reiniciar
             sensor.restart()
@@ -95,5 +97,7 @@ def mod_continuo(sensor: Sensor) -> None:
                 sensor.sendMessageUDP(msg.__str__())
                 time.sleep(1)
         except RuntimeError as e:
+            if e.__str__() == "Broker desconectado":
+                break
             msg = {"success": False, "code": 400, "descript": e.__str__()}
             sensor.sendMessageUDP(msg.__str__())

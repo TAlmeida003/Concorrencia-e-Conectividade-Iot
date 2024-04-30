@@ -128,17 +128,18 @@ def get_request(sensor: Sensor):
 
     View.get_baseboard()
     print("\n", (("=" * 15) + " DADOS RECEBIDOS DO SERVIDOR " + ("=" * 15)).center(170), "\n")
-    View.get_baseboard()
     print()
+    View.get_baseboard()
 
-    print(f"|{'Requisição': ^15}|{'Nome': ^15}|{'Estado': ^15}|{'Conexão': ^15}|{'UDP Dados': ^15}|".center(170))
+    print(f"|{'Requisição': ^16}|{'Nome': ^16}|{'Estado': ^16}|{'Conexão': ^16}|{'UDP Dados': ^16}|".center(170))
     View.get_baseboard()
-    print(f"|{sensor.__exe_serve_atual__:^15}|{sensor.__name__:^15}|{state:^15}|"
-          f"{conexao:^15}|{udp:^15}|".center(170))
+    print(f"|{sensor.__exe_serve_atual__:^16}|{sensor.__name__:^16}|{state:^16}|"
+          f"{conexao:^16}|{udp:^16}|".center(170))
+
     View.get_baseboard()
-    print(f"|{'Temperatura': ^15}|{'Umidade': ^15}|{'IP': ^15}|".center(170))
+    print(f"|{'Temperatura': ^16}|{'Umidade': ^16}|".center(170))
     View.get_baseboard()
-    print(f"|{temperatura:^15}|{umidade:^15}|".center(170))
+    print(f"|{temperatura:^16}|{umidade:^16}|".center(170))
 
     print("\n" * 2)
     print(f"Digite ENTER para voltar ao menu principal.".center(170))

@@ -54,10 +54,11 @@ class ConnectionDevice:
     def receiveMessage(self) -> dict:
         if not self.__connected__:
             raise RuntimeError("Broker desconectado")
+
         while self.__connected__:
             try:
                 self.__tcp_connection__.settimeout(5)
-                msg = self.__tcp_connection__.recv(2048).decode('utf-8')
+                msg: str = self.__tcp_connection__.recv(2048).decode('utf-8')
                 if msg == "":
                     self.disconnectBroker()
                     raise RuntimeError("Broker desconectado")
