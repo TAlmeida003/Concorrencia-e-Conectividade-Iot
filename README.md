@@ -37,8 +37,35 @@
 </div>
 
 <div id="Software">
-<h2> Tecnologias Utilizadas</h2>
+<h2> Softwares Utilizadas</h2>
 <div align="justify">
+
+Nesta seção, são apresentados os softwares utilizados durante o desenvolvimento do projeto.
+
+<h3> Linguagem Python</h3>
+A linguagem Python foi escolhida devido à sua facilidade de aprendizado e flexibilidade. 
+Sua sintaxe limpa e legível permite a rápida prototipagem de ideias e o desenvolvimento ágil de aplicações. 
+Além disso, Python é reconhecido pela sua vasta gama de bibliotecas e frameworks que facilitam o desenvolvimento 
+em diversas áreas. É importante ressaltar que a versão utilizada foi a 3.12.2.
+
+<h3> Biblioteca Flask</h3>
+A biblioteca Flask é um módulo para construção de aplicações web em Python. Ela oferece flexibilidade 
+para o desenvolvimento de APIs, permitindo a criação de endpoints RESTful e o gerenciamento de rotas HTTP.
+
+<h3> Biblioteca Requests</h3>
+A biblioteca Requests é uma ferramenta para fazer requisições HTTP em Python. Ela oferece uma 
+interface que simplifica o processo de envio e recebimento de dados pela internet, tornando a 
+comunicação com APIs mais eficiente.
+
+<h3> Docker</h3>
+O Docker é uma plataforma de implantação e execução de aplicativos em contêineres. 
+Um contêiner é uma unidade leve e portátil que inclui tudo o que um aplicativo precisa 
+para ser executado de forma independente, como código, bibliotecas, dependências e configurações.
+O Docker oferece uma plataforma consistente para desenvolver, testar e implantar aplicativos, 
+garantindo que os ambientes de desenvolvimento e produção sejam consistentes e reproduzíveis.
+
+<h3>IDE PyCharm</h3>
+A IDE PyCharm é um ambiente de desenvolvimento integrado projetado especificamente para Python. O PyCharm oferece uma ampla gama de recursos para aumentar a produtividade dos desenvolvedores, incluindo realce de sintaxe avançado, completamento automático de código, depuração integrada e suporte para controle de versão. Além disso, o PyCharm possui integração com o Docker, facilitando o desenvolvimento e a implantação de aplicativos Python em diversos ambientes.
 
 </div>
 </div>
