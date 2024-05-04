@@ -1,5 +1,4 @@
 import os
-import socket
 import sys
 import threading
 import time
@@ -11,6 +10,7 @@ import View
 
 
 def iniciar_conexao(sensor: Sensor) -> None:
+    View.get_clear_prompt()
     print((View.get_paint_color() + "conectando ao servidor...").center(170))
     try:
         connect(sensor)
@@ -22,8 +22,8 @@ def iniciar_conexao(sensor: Sensor) -> None:
 
 def connect(sensor: Sensor) -> None:
     sensor.connectBroker()
-    threading.Thread(target=receive_and_respond, args=[sensor]).start()
-    threading.Thread(target=mod_continuo, args=[sensor]).start()
+    threading.Thread(target=receive_and_respond, args=[sensor], name="Receber dados TCP").start()
+    threading.Thread(target=get_option_Serve_udp, args=[sensor], name="Mandar dados UDP").start()
 
 
 def receive_and_respond(sensor: Sensor) -> None:
@@ -32,18 +32,23 @@ def receive_and_respond(sensor: Sensor) -> None:
             msg: dict = sensor.receiveMessage()
             get_option_Serve(msg, sensor)
         except RuntimeError:
+            if not sensor.auto_connect:
+                threading.Thread(target=auto_connect, args=[sensor], name="Reconexão automática").start()
             if sensor.visual:
                 get_request(sensor)
-            threading.Thread(target=auto_connect, args=[sensor]).start()
             break
 
 
 def auto_connect(sensor: Sensor) -> None:
-    while not sensor.__connected__ and not sensor.exit:
+    while not sensor.__connected__ and not sensor.exit and sensor.user_connected:
+        sensor.auto_connect = True
         try:
             connect(sensor)
         except RuntimeError:
+            if sensor.visual:
+                get_request(sensor)
             time.sleep(5)
+    sensor.auto_connect = False
 
 
 def get_option_Serve(user_choice: dict, sensor: Sensor) -> None:
@@ -84,7 +89,7 @@ def get_option_Serve(user_choice: dict, sensor: Sensor) -> None:
         get_request(sensor)
 
 
-def mod_continuo(sensor: Sensor) -> None:
+def get_option_Serve_udp(sensor: Sensor) -> None:
     while sensor.__connected__:
         try:
             while sensor.is_continuous_mod():
@@ -94,6 +99,7 @@ def mod_continuo(sensor: Sensor) -> None:
                     msg["descript"] = f"Temperatura atual: {sensor.get_temperature()}°C."
                 else:
                     msg["descript"] = f"Umidade atual: {sensor.get_humidity()}%."
+
                 sensor.sendMessageUDP(msg.__str__())
                 time.sleep(1)
         except RuntimeError as e:

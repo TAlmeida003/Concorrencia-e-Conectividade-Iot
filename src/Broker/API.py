@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify, request
 from Server import Server
 
@@ -10,7 +9,6 @@ app = Flask(__name__)
 def get_devices():
     if request.method != 'GET':
         return jsonify({"success": False, "descript": "Esta rota aceita apenas solicitações GET"}), 405
-
     return jsonify(serve.get_list_devices())
 
 
@@ -43,34 +41,28 @@ def get_options_device(ip: str):
 
 @app.route('/devices/<string:ip>/<string:option>', methods=['GET'])
 def get_option_device(ip: str, option: str):
-    try:
-        serve.check_method_option(ip, option, request.method)
-        dict_resp: dict = serve.get_device_option(ip, option)
-        if not dict_resp["success"]:
-            return jsonify(dict_resp), dict_resp["code"]
-        return jsonify(dict_resp)
-    except RuntimeError as e:
-        return jsonify({"success": False, "descript": e.__str__()}), 400
+    return get_device_aux(ip, option)
 
 
 @app.route('/devices/<string:ip>/<string:option>', methods=['POST'])
 def post_option_device(ip: str, option: str):
+    return get_device_aux(ip, option)
 
-    try:
-        serve.check_method_option(ip, option, request.method)
-        dict_resp: dict = serve.get_device_option(ip, option)
-        if not dict_resp["success"]:
-            return jsonify(dict_resp), dict_resp["code"]
-        return jsonify(dict_resp)
-    except RuntimeError as e:
-        return jsonify({"success": False, "descript": e.__str__()}), 400
 
 @app.route('/devices/<string:ip>/<string:option>/<string:value>', methods=['POST'])
 def post_option_device_value(ip: str, option: str, value: str):
+    return get_device_aux(ip, option, value)
+
+
+def get_device_aux(ip: str, option: str, value: str = None):
     try:
         serve.check_method_option(ip, option, request.method)
 
-        dict_resp: dict = serve.get_device_option(ip, option, value)
+        if value:
+            dict_resp: dict = serve.get_device_option(ip, option, value)
+        else:
+            dict_resp: dict = serve.get_device_option(ip, option)
+
         if not dict_resp["success"]:
             return jsonify(dict_resp), dict_resp["code"]
         return jsonify(dict_resp)

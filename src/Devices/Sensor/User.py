@@ -1,5 +1,6 @@
 import os
 import sys
+import threading
 
 from Sensor import Sensor
 import Serve
@@ -8,13 +9,10 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
 import View
-visual: bool = False
+
 
 def is_exit_option(user_choice: int) -> bool:
-    OPTION_EXIT: int = 8
-    if user_choice != OPTION_EXIT:
-        return False
-    return True
+    return user_choice == 8
 
 
 def check_option_main_menu(user_choice: int) -> None:
@@ -27,6 +25,7 @@ def is_a_valid_main_menu_option(user_choice: int) -> bool:
         check_option_main_menu(user_choice)
         return True
     except RuntimeError as error:
+        View.get_clear_prompt()
         View.get_report_error(error.__str__())
         return False
 
@@ -37,6 +36,7 @@ def display_main_menu(sensor: Sensor) -> None:
     temperatura = round(sensor.get_temperature(), 1).__str__() if sensor.__state__ else "-.-"
     umidade = round(sensor.get_humidity(), 1).__str__() if sensor.__state__ else "-.-"
     View.get_baseboard()
+
     print(f"| Dispositivo: Sensor       Nome: {sensor.__name__}          IP: {sensor.__IP__: ^15} |".center(170))
     print(f"| Broker: {conexao:^8}         Temperatura: {temperatura:^4}ºC       "
           f"   Umidade: {umidade: ^4}% |".center(170))
@@ -45,8 +45,8 @@ def display_main_menu(sensor: Sensor) -> None:
     View.get_baseboard()
 
     list_options: list[str] = ["LIGAR SENSOR", "DESLIGAR SENSOR", "CONECTAR AO BROKER", "DESCONECTAR DO BROKER",
-                              "ALTERAR O NOME DO SENSOR", "MUDAR TEMPERATURA DO SENSOR",
-                              "MUDAR UMIDADE DO SENSOR", "ENCERRAR PROGRAMA"]
+                               "ALTERAR O NOME DO SENSOR", "MUDAR TEMPERATURA DO SENSOR",
+                               "MUDAR UMIDADE DO SENSOR", "ENCERRAR PROGRAMA"]
 
     print("\n", (("=" * 15) + " MENU PRINCIPAL " + ("=" * 15)).center(170), "\n")
     View.get_baseboard()
@@ -81,7 +81,6 @@ def get_main_manu_entry(sensor: Sensor) -> int:
 
 
 def get_option(user_choice: int, sensor: Sensor) -> None:
-    global visual
     try:
         if user_choice == 1:  # ligar
             sensor.turnOn()
@@ -89,8 +88,12 @@ def get_option(user_choice: int, sensor: Sensor) -> None:
             sensor.turnOff()
         elif user_choice == 3:  # conectar
             Serve.iniciar_conexao(sensor)
+            return
         elif user_choice == 4:  # desconectar
-            sensor.disconnectBroker()
+            if sensor.disconnectBroker():
+                sensor.user_connected = False
+            else:
+                raise RuntimeError("Sensor não está conectado.")
         elif user_choice == 5:  # mudar nome
             print(" " * 52, "* INFORME O NOVO NOME DO SENSOR: ", end="")
             sensor.setName(input())
@@ -129,17 +132,30 @@ def get_request(sensor: Sensor):
     View.get_baseboard()
     print("\n", (("=" * 15) + " DADOS RECEBIDOS DO SERVIDOR " + ("=" * 15)).center(170), "\n")
     print()
-    View.get_baseboard()
 
+    View.get_baseboard()
     print(f"|{'Requisição': ^16}|{'Nome': ^16}|{'Estado': ^16}|{'Conexão': ^16}|{'UDP Dados': ^16}|".center(170))
     View.get_baseboard()
     print(f"|{sensor.__exe_serve_atual__:^16}|{sensor.__name__:^16}|{state:^16}|"
           f"{conexao:^16}|{udp:^16}|".center(170))
+    View.get_baseboard()
+    print()
 
     View.get_baseboard()
-    print(f"|{'Temperatura': ^16}|{'Umidade': ^16}|".center(170))
+    print(f"|{'Temperatura': ^16}|{'Umidade': ^16}|{'IP': ^16}|".center(170))
     View.get_baseboard()
-    print(f"|{temperatura:^16}|{umidade:^16}|".center(170))
+    print(f"|{temperatura:^16}|{umidade:^16}|{sensor.__IP__: ^16}|".center(170))
+    View.get_baseboard()
+    print()
+
+    View.get_baseboard()
+    print(f"Lista de Threads - Threads ativas: {threading.active_count()} ".center(170))
+    View.get_baseboard()
+    txt: str = ""
+    for thread in threading.enumerate():
+        txt += f"|{thread.name: ^22}|"
+    print(txt.center(170))
+    View.get_baseboard()
 
     print("\n" * 2)
     print(f"Digite ENTER para voltar ao menu principal.".center(170))

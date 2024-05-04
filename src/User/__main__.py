@@ -1,3 +1,5 @@
+import time
+
 import View
 
 
@@ -26,8 +28,9 @@ def get_option(user_choice: str) -> None:
     elif user_choice == "2":
         ip = input((" " * 40) + "* Informe o Endereço IP: ")
         View.get_clear_prompt()
-        while View.print_device_options(ip):
-            pass
+        dict_device = View.get_device(ip)
+        while dict_device != {} and View.print_device_options(ip, dict_device):
+            time.sleep(0.1)
     else:
         View.get_clear_prompt()
         View.get_report_error("Opção inválida! Tente novamente.")

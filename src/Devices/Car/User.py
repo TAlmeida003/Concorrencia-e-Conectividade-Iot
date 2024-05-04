@@ -1,6 +1,6 @@
 import os
 import sys
-
+import threading
 from Car import Car
 import Serve
 
@@ -14,7 +14,7 @@ def is_exit_option(user_choice: int) -> bool:
 
 
 def check_option_main_menu(user_choice: int) -> None:
-    if 1 > user_choice or user_choice > 18:
+    if 1 > user_choice or user_choice > 19:
         raise RuntimeError("OPÇÃO INVALIDA")
 
 
@@ -23,6 +23,7 @@ def is_a_valid_main_menu_option(user_choice: int) -> bool:
         check_option_main_menu(user_choice)
         return True
     except RuntimeError as error:
+        View.get_clear_prompt()
         View.get_report_error(error.__str__())
         return False
 
@@ -54,15 +55,17 @@ def display_main_menu(car: Car) -> None:
     View.get_baseboard()
     print()
 
-    list_option: list[str] = ["LIGAR VEÍCULO", "DESLIGAR VEÍCULO", "CONECTAR AO BROKER", "DESCONECTAR DO BROKER",
+    list_options: list[str] = ["LIGAR VEÍCULO", "DESLIGAR VEÍCULO", "CONECTAR AO BROKER", "DESCONECTAR DO BROKER",
                               "DEFINIR VELOCIDADE", "DEFINIR BATERIA", "DEFINIR GASOLINA", "TRAVAR PORTA",
                               "DESTRAVAR PORTA", "DEFINIR DIREÇÃO PARA FRENTE", "INICIAR MOVIMENTO", "PARAR VEÍCULO",
                               "DEFINIR DIREÇÃO PARA TRÁS", "ATIVAR SENSOR DE COLISÃO", "DESATIVA SENSOR DE COLISÃO",
                               "ATIVA BUZINA", "DESATIVAR BUZINA", "ENCERRAR PROGRAMA"]
-    for i in range(1, len(list_option), 3):
-        print(f"[ {i: ^1} ] - {list_option[i - 1]:^26}        [ {i + 1:^1} ] - {list_option[i]:^26}        "
-              f"[ {i + 2: ^1} ] - {list_option[i + 1]: ^26}".center(170), "\n" * 1)
+    for i in range(1, len(list_options), 3):
+        print(f"[ {i: ^1} ] - {list_options[i - 1]:^26}        [ {i + 1:^1} ] - {list_options[i]:^26}        "
+              f"[ {i + 2: ^1} ] - {list_options[i + 1]: ^26}".center(170), "\n" * 1)
     View.get_baseboard()
+
+    print(f"Digite [ {len(list_options) + 1} ] para ver dados recebidos pelo servidor.".center(170))
     print(" " * 41, "* INFORME QUAL A OPÇÃO DESEJADA: ", end="")
 
 
@@ -87,15 +90,18 @@ def get_main_manu_entry(car: Car) -> int:
 
 def get_option(user_choice: int, car: Car) -> None:
     try:
-
         if user_choice == 1:  # LIGAR VEÍCULO
             car.turnOn()
         elif user_choice == 2:  # DESLIGAR VEÍCULO
             car.turnOff()
         elif user_choice == 3:  # CONECTAR AO BROKER
-            Serve.iniciar_conexao(car)
+            Serve.start_connect(car)
+            return
         elif user_choice == 4:  # DESCONECTAR DO BROKER
-            car.disconnectBroker()
+            if car.disconnectBroker():
+                car.user_connected = False
+            else:
+                raise RuntimeError("Veículo não está conectado.")
         elif user_choice == 5:  # DEFINIR VELOCIDADE
             try:
                 print(" " * 41, "* INFORME A VELOCIDADE: ", end="")
@@ -134,7 +140,16 @@ def get_option(user_choice: int, car: Car) -> None:
             pass
         elif user_choice == 17:  # DESATIVAR BUZINA
             pass
+        elif user_choice == 19:
+            car.visual = True
+            car.get_request()
+            input()
+            car.visual = False
+
         View.get_clear_prompt()
     except RuntimeError as e:
         View.get_clear_prompt()
         View.get_report_error(e.__str__())
+
+
+

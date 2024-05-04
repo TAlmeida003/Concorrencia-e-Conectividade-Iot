@@ -115,7 +115,7 @@ Execute o seguinte comando para instalar as dependências do projeto:
 
 Execute o seguinte comando para iniciar o broker:
 
-        python3 ./src/Broker
+    python3 ./src/Broker
 Após iniciar o broker, obtenha o endereço IP e edite o arquivo de configuração localizado em <code>src/config.py</code> e insira o endereço IP do broker na variável HOST.
 
 Execute os seguintes comandos para iniciar os dispositivos e a aplicação de controle dos dispositivos:
@@ -133,10 +133,10 @@ Os Dockerfile necessários para construir as imagens Docker estão disponíveis 
 imagens Docker, execute os passos 1 e 2 e configure o endereço IP no arquivo <code>config.py</code> e os
 seguintes comandos:
 
-    docker build -t broker Dockerfile_broker .
-    docker build -t car Dockerfile_car .
-    docker build -t sensor Dockerfile_sensor .
-    docker build -t user Dockerfile_user .
+    docker build -t broker -f Dockerfile_broker .
+    docker build -t car -f Dockerfile_car .
+    docker build -t sensor -f Dockerfile_sensor .
+    docker build -t user -f Dockerfile_user .
 
 Após construir as imagens Docker, execute o seguinte comando para iniciar os containers Docker:
 

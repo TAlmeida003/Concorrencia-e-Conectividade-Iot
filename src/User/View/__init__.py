@@ -49,38 +49,40 @@ def get_baseboard() -> None:
     print(("-=" * 45).center(SIZE_CENTER - 2))
 
 
-def print_device_options(ip: str) -> bool:
+def get_device(ip: str) -> dict:
     try:
         dict_device = requests.get(f'{HOST_HTTP}/devices/{ip}')
-
         if dict_device.status_code != 200 and dict_device.status_code != 404:
             get_clear_prompt()
             get_report_error(dict_device.json()['descript'])
-            return False
+            return {}
         elif dict_device.status_code == 404:
             get_clear_prompt()
             get_report_error("Dispositivo não encontrado.")
-            return False
-
+            return {}
     except requests.exceptions.ConnectionError:
         get_clear_prompt()
         get_report_error("Erro ao conectar com o servidor.")
-        return False
+        return {}
+
+    return dict_device.json()
+
+
+def print_device_options(ip: str, dict_device: dict) -> bool:
 
     cabecalho()
     topico("Dispositivo")
     get_baseboard()
 
-    print(f"|{'Opções do Dispositivo: ' + dict_device.json()['ip']: ^86}|".center(168))
+    print(f"|{'Opções do Dispositivo: ' + dict_device['ip']: ^86}|".center(168))
     print(f"|{('_' * 75): ^86}|".center(168))
     pular_linha(1)
-    print(f"|{'Tipo de dispositivo: ' + dict_device.json()['tag'] + '      ' + 'Nome do dispositivo: '
-              + dict_device.json()['name']: ^86}|".center(168))
+    print(f"|{'Tipo de dispositivo: ' + dict_device['tag'] + '      ' + 'Nome do dispositivo: '
+              + dict_device['name']: ^86}|".center(168))
     pular_linha(2)
 
-    list_options = requests.get(f'{HOST_HTTP}/devices/{ip}/options').json()
+    list_options = dict_device['opções']
     print_options_devices(list_options)
-
     pular_linha(2)
     get_baseboard()
     print(f"Digite [ {len(list_options) + 1} ] para voltar ao menu principal.".center(170))
@@ -106,14 +108,23 @@ def print_device_options(ip: str) -> bool:
         get_clear_prompt()
         if dict_option.status_code == 200:
             get_report_action(dict_option.json()['descript'])
-        else:
-            get_report_error(dict_option.json()['descript'])
 
+        elif dict_option.status_code != 404:
+            get_clear_prompt()
+            get_report_error(dict_option.json()['descript'])
+        elif dict_option.status_code == 404:
+            get_clear_prompt()
+            get_report_error("Dispositivo não encontrado.")
+            return False
         return True
     except ValueError:
         get_clear_prompt()
         get_report_error("Opção inválida! Tente novamente.")
         return True
+    except requests.exceptions.ConnectionError:
+        get_clear_prompt()
+        get_report_error("Erro ao conectar com o servidor.")
+        return False
 
 
 def print_options_devices(list_options: list[str]) -> None:

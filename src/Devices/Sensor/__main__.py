@@ -5,14 +5,8 @@ from Sensor import Sensor
 import Serve
 import User
 
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(parent_dir)
-
-import View
-
 
 def main() -> None:
-    View.get_clear_prompt()
     sensor = Sensor()
     Serve.iniciar_conexao(sensor)
 
