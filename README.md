@@ -74,6 +74,49 @@ A IDE PyCharm é um ambiente de desenvolvimento integrado projetado especificame
 <h2> Broker e Dispositivos</h2>
 <div align="justify">
 
+Nessa seção, será apresentado a lógica de funcionamento do broker e dos dispositivos desenvolvidos.
+
+<h3> Broker</h3>
+
+<h3> Dispositivos</h3>
+Para simular os dispositivos no ambiente de software, foram empregados dois dispositivos virtuais: um sensor de temperatura e umidade, e um veículo (carro). Aqui, exploraremos como esses dispositivos são controlados tanto localmente, por meio de sua interface de controle, quanto remotamente.
+<h4> Sensor</h4>
+Este dispositivo emula um sensor iot fictício, replicando o comportamento de um sensor real de temperatura e umidade. Em sua interface de controle, o sensor oferece o controle das seguintes características:
+
+
+- **Controle de estado:** Permite ligar o sensor ou colocá-lo em modo de espera, que é essencialmente uma forma de desligamento parcial, mantendo-o pronto para ser ativado novamente;
+
+- **Controle de dados:** Possibilita a alteração da temperatura (com controle de 5 a 60 °C) e da umidade (com controle de 20 a 80 por cento);
+
+- **Controle de conectividade:** Facilita a conexão e desconexão do broker;
+- **Visualização de dados:** Fornece informações como o endereço IP do dispositivo, o número de threads ativas e o registro de envio e recebimento de dados.
+
+<p align="center">
+  <img src="img/InterfaceSensor.png" width = "500" />
+</p>
+<p align="center"><strong>Inteface de controle do sensor</strong></p>
+
+O sensor também é projetado para ser controlado remotamente. Através de comandos específicos, é possível alterar seus estados e também solicitar a transmissão de dados. Cada comando possui uma função específica e uma maneira distinta de resposta, detalhadas posteriormente. Segue abaixo uma tabela que apresenta cada um dos comandos disponíveis, sua forma de resposta (UDP ou TCP), e o protocolo padrão utilizado para chamá-lo via HTTP:
+
+<div align="center">
+
+|Comando  	| Resposta  |   Protocolo HTTP|
+| ------------- | ------------- | ------------- |
+| ligar  	     | TCP           |  POST	    |
+| desligar 	     | TCP           |  POST	    |
+| temperatura-atual	     | UDP          | GET	    |
+| umidade-atual	     | UDP          | GET	    |
+| reiniciar 	     | TCP           |  POST	    |
+| definir-nome     | TCP           |  POST	    |
+
+</div>
+
+<p align="center">
+<strong> Tabela com os comando remotos do sensor</strong> </p>
+
+
+<h4> Carro </h4>
+
 </div>
 </div>
 
