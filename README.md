@@ -300,10 +300,17 @@ HOST_HTTP: str = f'http://{HOST}:{PORT_FLASK}'  # Endereço de acesso ao servido
 <h2> API RESTful</h2>
 <div align="justify">
 
-Para a comunicação com o broker por meio de uma API, foram desenvolvidos endpoints HTTP que permitem realizar requisições ao broker. Este tópico explicará as seis rotas de acesso. Observação: as rotas estão configuradas para "localhost", mas devem ser acessadas com base no IP do broker. 
+Para a comunicação com o broker por meio de uma API, foram desenvolvidos endpoints HTTP que permitem realizar requisições ao broker, utilizando como base o framework **Flask**. Este tópico explicará as seis rotas de acesso.
 
 **URL principal:** `https://localhost:5002`
 
+>Observação: as rotas estão configuradas para "localhost", mas devem ser acessadas com base no IP do broker. 
+
+Antes de detalharmos as rotas, é importante destacar os códigos de status HTTP que podem ser retornados por essas rotas:
+
+- **200:** Indica que a requisição foi executada com sucesso.
+- **400:** Alerta sobre falhas ou erros na execução do pedido.
+- **404:** Indica que o dispositivo ou endpoint solicitado não foi encontrado.
 <h3> Listar dispositivos:</h3>
 
 - **Método:** GET
@@ -395,6 +402,16 @@ Para a comunicação com o broker por meio de uma API, foram desenvolvidos endpo
 <div id="usuario">
 <h2> Aplicação de Controle iot</h2>
 <div align="justify">
+
+A interface de controle IoT oferece acesso e gerenciamento remoto dos dispositivos conectados. Esta aplicação desempenha o papel de visualizar e interagir com as opções disponíveis em cada dispositivo. Ela opera exclusivamente com base no protocolo HTTP e nos dados recebidos do broker por meio da API.
+
+<h3> Visualização da Aplicação</h3>
+
+A aplicação consiste em três telas distintas. A primeira é o menu principal, onde é possível visualizar os dispositivos conectados ao broker e acessar detalhes específicos de cada dispositivo. Ao visualizar os dispositivos, o usuário verá a quantidade total e informações resumidas sobre cada dispositivo, como tipo (sensor ou carro), nome e endereço IP.
+
+Ao optar por acessar um dispositivo específico, o usuário deverá fornecer o endereço IP correspondente. Em seguida, as opções disponíveis para o dispositivo serão recuperadas, permitindo ao usuário escolher entre elas. A aplicação permanece na tela de opções após cada requisição, aguardando novas interações do usuário ou a desconexão do dispositivo.
+
+A organização do código segue uma arquitetura modular, dividida em dois módulos principais: um responsável pela visualização (<code>View.__init__.py </code>) e outro que gerencia o loop principal do programa (<code>__main__.py</code>). A estrutura do código é ilustrada na próxima imagem.
 
 </div>
 </div>
