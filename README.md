@@ -86,9 +86,16 @@ O broker é uma tecnologia que desempenha o papel de intermediário na comunica�
 
 Para gerenciar esses dispositivos, o broker utiliza uma estrutura de dados que organiza todos os dispositivos com base em seus endereços IP, permitindo a diferenciação entre eles. Além disso, foram utilizados elementos de programação, como o uso de threads e cache de dados, para otimizar o desempenho do broker. Esses tópicos serão abordados em detalhes posteriormente.
 
-Por ser uma figura central, o endereço IP do broker deve ser inserido em cada dispositivo para que eles possam se conectar ao servidor. No projeto, essa configuração é realizada no arquivo config.py. Para acessar esse arquivo, siga as instruções de execução do projeto.
+Por ser uma figura central, o endereço IP do broker deve ser inserido em cada dispositivo para que eles possam se conectar ao servidor. No projeto, essa configuração é realizada no arquivo <code>config.py</code>. Para acessar esse arquivo, siga as instruções de execução do projeto.
 
 As requisições do aplicação do usuário ao broker são feitas por meio de uma interface de API RESTful, que se comunica com os elementos do broker para gerenciar as conexões de cada dispositivo de forma eficiente.
+
+No projeto, o broker é composto por três arquivos principais: o arquivo do servidor (<code>Server/__init__.py</code>), que contém os métodos de controle e gerenciamento do servidor; a API (<code>API.py</code>), responsável por utilizar as funções do servidor e criar os endpoints para acesso HTTP; e o arquivo principal (<code>__main__.py</code>), onde esses dois arquivos são inicializados. A distribuição dos arquivos no diretório do broker é mostrada na imagem.
+
+<p align="center">
+  <img src="img/dirBroker.png" width = "243" />
+</p>
+<p align="center"><strong>Organização de arquivos relacionados ao broker</strong></p>
 
 <h3> Dispositivos</h3>
 Para simular os dispositivos no ambiente de software, foram empregados dois dispositivos virtuais: um sensor de temperatura e umidade, e um veículo (carro). Aqui, exploraremos como esses dispositivos são controlados tanto localmente, por meio de sua interface de controle, quanto remotamente.
@@ -126,7 +133,6 @@ O sensor também é projetado para ser controlado remotamente. Através de coman
 <p align="center">
 <strong> Tabela com os comando remotos do sensor</strong> </p>
 
-
 <h4> Carro </h4>
 O Carro é responsável por simular um veículo IoT, replicando diversos comportamentos de um carro real. Em sua interface de controle, oferece funcionalidades semelhantes ao sensor, como controle de estado, controle de conectividade e visualização de dados. Além disso, inclui outras características:
 
@@ -163,12 +169,20 @@ O carro também é capaz de ser gerenciado remotamente, compartilhando caracter�
 | get-bateria         | UDP                    | GET            |
 | get-colisao         | UDP                    | GET            |
 
-
 </div>
 
 <p align="center">
 <strong> Tabela com os comando remotos do carro </strong> </p>
 
+<h4>Organização do código</h4>
+
+No projeto, os dispositivos seguem uma lógica semelhante de organização. Cada dispositivo é representado por uma classe que encapsula os métodos de comunicação direta com o broker, como envio, recebimento e conexão (`ConnectionDevice.__init__.py`). Além disso, existe um arquivo de comunicação (`Communication.py`) que controla os envios a partir das requisições do broker, lidando com as peculiaridades de comunicação de cada dispositivo.
+
+No âmbito da lógica de negócios, dentro de cada pasta de dispositivo, encontramos uma classe com o nome correspondente ao dispositivo (por exemplo, `Car.__init__.py` ou `Sensor.__init__.py`). Essas classes são responsáveis por definir o comportamento específico de cada dispositivo.
+
+Finalmente, há as classes de interface de usuário (`User.py`) e visualização (`View.__init__.py`), que são encarregadas de lidar com as impressões e entradas relacionadas a cada dispositivo.
+
+O arquivo principal (`__main__.py`) atua como o ponto de entrada do programa, coordenando e integrando todos os outros arquivos e funcionalidades. As proximas imagens mostram a árvore de diretorios e arquivos dos dispositivos:
 </div>
 </div>
 
