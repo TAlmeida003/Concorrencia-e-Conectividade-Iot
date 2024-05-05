@@ -113,7 +113,12 @@ Este dispositivo emula um sensor iot fictício, replicando o comportamento de um
 <p align="center">
   <img src="img/InterfaceSensor.png" width = "600" />
 </p>
-<p align="center"><strong>Inteface de controle do sensor</strong></p>
+<p align="center"><strong>Interface de controle do sensor</strong></p>
+
+<p align="center">
+  <img src="img/interfaceDeVisualizaoSensor.png" width = "600" />
+</p>
+<p align="center"><strong>Interface de visualização de dados em tempo real do sensor</strong></p>
 
 O sensor também é projetado para ser controlado remotamente. Através de comandos específicos, é possível alterar seus estados e também solicitar a transmissão de dados. Cada comando possui uma função específica e uma maneira distinta de resposta, detalhadas posteriormente. Segue abaixo uma tabela que apresenta cada um dos comandos disponíveis, sua forma de resposta (UDP ou TCP), e o protocolo padrão utilizado para chamá-lo via HTTP:
 
@@ -143,7 +148,12 @@ O Carro é responsável por simular um veículo IoT, replicando diversos comport
 <p align="center">
   <img src="img/InterfaceCarro.png" width = "800" />
 </p>
-<p align="center"><strong>Inteface de controle do Carro</strong></p>
+<p align="center"><strong>Interface de controle do Carro</strong></p>
+
+<p align="center">
+  <img src="img/interfaceDeVisualizacoaCar.png" width = "600" />
+</p>
+<p align="center"><strong>Interface de visualização de dados em tempo real do carro</strong></p>
 
 O carro também é capaz de ser gerenciado remotamente, compartilhando características semelhantes ao sensor. Nesse contexto, uma tabela é apresentada para ilustrar os comandos de controle remoto do carro, indicando se a resposta é em UDP ou TCP, e qual protocolo HTTP é utilizado para acessá-los:
 
@@ -183,6 +193,22 @@ No âmbito da lógica de negócios, dentro de cada pasta de dispositivo, encontr
 Finalmente, há as classes de interface de usuário (`User.py`) e visualização (`View.__init__.py`), que são encarregadas de lidar com as impressões e entradas relacionadas a cada dispositivo.
 
 O arquivo principal (`__main__.py`) atua como o ponto de entrada do programa, coordenando e integrando todos os outros arquivos e funcionalidades. As proximas imagens mostram a árvore de diretorios e arquivos dos dispositivos:
+
+<p align="center">
+  <img src="img/DirDevices.png" width = "285" />
+</p>
+<p align="center"><strong>Organização de arquivos relacionados aos dispositivos</strong></p>
+
+<p align="center">
+  <img src="img/dirCar.png" width = "243" />
+</p>
+<p align="center"><strong>Organização de arquivos relacionados ao dispositivo carro</strong></p>
+
+<p align="center">
+  <img src="img/dirSensor.png" width = "282" />
+</p>
+<p align="center"><strong>Organização de arquivos relacionados ao dispositivo sensor</strong></p>
+
 </div>
 </div>
 
