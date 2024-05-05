@@ -434,6 +434,11 @@ do dispositivo. As imagens a seguir ilustram as telas da aplicação:
 A organização do código segue uma arquitetura modular, dividida em dois módulos principais: um responsável pela 
 visualização (<code>View.__init__.py </code>) e outro que gerencia o loop principal do programa 
 (<code>__main__.py</code>). A estrutura do código é ilustrada na próxima imagem.
+ 
+<p align="center">
+  <img src="img/DirUser.png" width = "285" />
+</p>
+<p align="center"><strong>Organização de arquivos relacionados à interface de controle</strong></p>
 
 </div>
 </div>
