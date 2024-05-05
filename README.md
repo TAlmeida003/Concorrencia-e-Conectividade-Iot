@@ -67,6 +67,9 @@ garantindo que os ambientes de desenvolvimento e produção sejam consistentes e
 <h3>IDE PyCharm</h3>
 A IDE PyCharm é um ambiente de desenvolvimento integrado projetado especificamente para Python. O PyCharm oferece uma ampla gama de recursos para aumentar a produtividade dos desenvolvedores, incluindo realce de sintaxe avançado, completamento automático de código, depuração integrada e suporte para controle de versão. Além disso, o PyCharm possui integração com o Docker, facilitando o desenvolvimento e a implantação de aplicativos Python em diversos ambientes.
 
+<h3> Insomnia </h3>
+
+O Insomnia é uma ferramenta usada para testar APIs e atuar como cliente REST, simplificando o desenvolvimento de APIs. Com ele, os desenvolvedores podem criar, testar e depurar suas APIs de maneira eficiente, oferecendo suporte a diferentes métodos de requisição, autenticação, gerenciamento de variáveis e até mesmo a criação de fluxos de trabalho complexos.
 </div>
 </div>
 
