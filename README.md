@@ -92,7 +92,7 @@ Este dispositivo emula um sensor iot fictício, replicando o comportamento de um
 - **Visualização de dados:** Fornece informações como o endereço IP do dispositivo, o número de threads ativas e o registro de envio e recebimento de dados.
 
 <p align="center">
-  <img src="img/InterfaceSensor.png" width = "500" />
+  <img src="img/InterfaceSensor.png" width = "600" />
 </p>
 <p align="center"><strong>Inteface de controle do sensor</strong></p>
 
@@ -100,14 +100,14 @@ O sensor também é projetado para ser controlado remotamente. Através de coman
 
 <div align="center">
 
-|Comando  	| Resposta  |   Protocolo HTTP|
-| ------------- | ------------- | ------------- |
-| ligar  	     | TCP           |  POST	    |
-| desligar 	     | TCP           |  POST	    |
-| temperatura-atual	     | UDP          | GET	    |
-| umidade-atual	     | UDP          | GET	    |
-| reiniciar 	     | TCP           |  POST	    |
-| definir-nome     | TCP           |  POST	    |
+| Comando     	      | Resposta  | Protocolo HTTP |
+|--------------------|-----------|----------------|
+| ligar  	           | TCP       | POST	          |
+| desligar 	         | TCP       | POST	          |
+| temperatura-atual	 | UDP       | GET	           |
+| umidade-atual	     | UDP       | GET	           |
+| reiniciar 	        | TCP       | POST	          |
+| definir-nome       | TCP       | POST	          |
 
 </div>
 
@@ -116,6 +116,46 @@ O sensor também é projetado para ser controlado remotamente. Através de coman
 
 
 <h4> Carro </h4>
+O Carro é responsável por simular um veículo IoT, replicando diversos comportamentos de um carro real. Em sua interface de controle, oferece funcionalidades semelhantes ao sensor, como controle de estado, controle de conectividade e visualização de dados. Além disso, inclui outras características:
+
+- **Controle de dados:** Permite definir a velocidade de movimentação (de 0 a 220 km/h), o nível de bateria (de 0 a 100%), e a quantidade de gasolina (de 0 a 55 litros).
+- **Controle de estados:** Possibilita travar e destravar as portas, selecionar a direção de movimentação (para frente, para trás e parar), iniciar o movimento, e ativar ou desativar o sensor de colisão.
+- **Visualização de dados:** Apresenta a ficha técnica do carro, incluindo modelo e ano de fabricação, por exemplo. Quando em movimento, exibe a distância percorrida a partir do ponto de origem, juntamente com todos os atributos do veículo.
+
+<p align="center">
+  <img src="img/InterfaceCarro.png" width = "600" />
+</p>
+<p align="center"><strong>Inteface de controle do Carro</strong></p>
+
+O carro também é capaz de ser gerenciado remotamente, compartilhando características semelhantes ao sensor. Nesse contexto, uma tabela é apresentada para ilustrar os comandos de controle remoto do carro, indicando se a resposta é em UDP ou TCP, e qual protocolo HTTP é utilizado para acessá-los:
+
+<div align="center">
+
+| Comando             | Resposta               | Protocolo HTTP |
+|---------------------|------------------------|----------------|
+| ligar               | TCP                    | POST           |
+| desligar            | TCP                    | POST           |
+| get-velocidade      | UDP                    | GET            |
+| definir-velocidade  | TCP                    | POST           |
+| travar-porta        | TCP                    | POST           |
+| destravar-porta     | TCP                    | POST           |
+| ir-para-frente      | TCP                    | POST           |
+| ir-para-tras        | TCP                    | POST           |
+| parar               | TCP                    | POST           |
+| iniciar-movimento   | TCP                    | POST           |
+| ativar-buzina       | TCP                    | POST           |
+| desativar-buzina    | TCP                    | POST           |
+| medir-distancia     | UDP                    | GET            |
+| status              | UDP                    | GET            |
+| get-gasolina        | UDP                    | GET            |
+| get-bateria         | UDP                    | GET            |
+| get-colisao         | UDP                    | GET            |
+
+
+</div>
+
+<p align="center">
+<strong> Tabela com os comando remotos do carro</strong> </p>
 
 </div>
 </div>
