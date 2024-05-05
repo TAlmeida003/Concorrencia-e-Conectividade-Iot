@@ -188,7 +188,7 @@ O carro também é capaz de ser gerenciado remotamente, compartilhando caracter�
 
 No projeto, os dispositivos seguem uma lógica semelhante de organização. Cada dispositivo é representado por uma classe que encapsula os métodos de comunicação direta com o broker, como envio, recebimento e conexão (`ConnectionDevice.__init__.py`). Além disso, existe um arquivo de comunicação (`Communication.py`) que controla os envios a partir das requisições do broker, lidando com as peculiaridades de comunicação de cada dispositivo.
 
-No âmbito da lógica de negócios, dentro de cada pasta de dispositivo, encontramos uma classe com o nome correspondente ao dispositivo (por exemplo, `Car.__init__.py` ou `Sensor.__init__.py`). Essas classes são responsáveis por definir o comportamento específico de cada dispositivo.
+Na lógica de negócios, dentro de cada pasta de dispositivo, encontramos uma classe com o nome correspondente ao dispositivo (por exemplo, `Car.__init__.py` ou `Sensor.__init__.py`). Essas classes são responsáveis por definir o comportamento específico de cada dispositivo.
 
 Finalmente, há as classes de interface de usuário (`User.py`) e visualização (`View.__init__.py`), que são encarregadas de lidar com as impressões e entradas relacionadas a cada dispositivo.
 
@@ -215,6 +215,65 @@ O arquivo principal (`__main__.py`) atua como o ponto de entrada do programa, co
 <div id="Conectividade">
 <h2> Interface de Rede</h2>
 <div align="justify">
+
+A comunicação entre os dispositivos e o broker é realizada por meio de uma interface de comunicação de rede. Este tópico explora o esquema de mensagens nos níveis de transporte e aplicação.
+
+<h3>Camada de Transporte</h3>
+
+A camada de transporte é uma das camadas do **modelo TCP/IP**, sendo responsável por garantir uma comunicação de dados confiável e eficiente entre sistemas em uma rede. Estabelece uma comunicação ponto a ponto entre os dispositivos, assegurando a entrega ordenada dos dados transmitidos.
+
+No projeto, foram empregados dois esquemas de conexão: **TCP** (*Transmission Control Protocol*) e **UDP** (*User Datagram Protocol*). A conexão TCP foi adotada para garantir a conexão segura entre o dispositivo e o broker, estabelecendo uma comunicação confiável. As requisições dos dispositivos devem ser entregues com segurança e garantia, justificando o uso desse tipo de conexão. Além disso, as respostas de gerenciamento devem confirmar as alterações realizadas, também utilizando essa conexão.
+
+Por outro lado, a conexão UDP foi escolhida por dois motivos. Primeiramente, como os dispositivos simulam dispositivos reais, o envio de dados é realizado como UDP, uma vez que eles enviam esses dados constantemente, garantindo que, mesmo se alguns dados forem perdidos, isso não afetará o sistema devido à sua constância. Além disso, o envio desses dados é mais rápido, tornando o processo mais eficiente. Assim, as requisições de pedidos de dados são realizadas em modo UDP, conforme mostrado anteriormente.
+
+
+<h3>Camada de aplicação</h3>
+
+A camada de aplicação representa a interface pela qual as aplicações interagem com os serviços de rede, facilitando a comunicação entre sistemas. No contexto do sistema com broker e dispositivos, a comunicação ocorre por meio do modelo cliente-servidor. 
+
+Nesse modelo, o broker assume o papel de servidor, fornecendo informações para outros programas ou dispositivos (clientes). Ele permanece sempre ativo, recebendo solicitações dos dispositivos e gerenciando as requisições feitas pela interface do usuário, além de encaminhar essas solicitações aos dispositivos e retornar suas respostas.
+
+Por outro lado, os dispositivos atuam como clientes, solicitando ao broker o envio e recebimento de dados. Nesse contexto, os dispositivos aguardam as respostas do broker e, com base nelas, podem tomar medidas adicionais, como atualizar seu estado interno ou responder a eventos específicos. O processo de comunicação entre eles segue as etapas a seguir:
+
+- O dispositivo inicia a conexão com o broker, enviando uma solicitação.
+
+- O servidor (broker) recebe a solicitação, processa-a e aceita a conexão, solicitando as opções específicas do dispositivo para armazená-las em cache (esse processo será explicado posteriormente).
+
+- O dispositivo recebe e envia suas opções e, em seguida, fica aguardando novas mensagens do broker.
+
+- O broker, após receber os dados, cria um ambiente para gerenciar aquele dispositivo e continua aguardando novas solicitações e pedidos de acesso aos dispositivos.
+
+As mensagens enviadas e recebidas têm um formato específico. Ao serem recebidas pelo dispositivo, elas contêm a requisição desejada (option) e o valor a ser inserido, se necessário (value):
+
+```json
+{
+"option": "",
+"value": ""
+}
+```
+
+A transmissão de dados possui dois modelos, dependendo do resultado da solicitação. No primeiro caso, em que a ação foi bem-sucedida, a mensagem contém um campo indicando o sucesso, o IP do dispositivo e uma descrição da ação solicitada:
+
+
+```json
+{
+"success": true,
+"IP": "",
+ "descript": ""
+}
+```
+
+No segundo caso, em que ocorreu um erro durante a solicitação, a mensagem inclui um código HTTP indicando o tipo de erro, juntamente com uma descrição do erro e o IP do dispositivo:
+
+```json
+{
+"success": false,
+"code": 400,
+"descript": "",
+"IP": ""
+}
+```
+
 
 </div>
 </div>
