@@ -274,7 +274,6 @@ No segundo caso, em que ocorreu um erro durante a solicitação, a mensagem incl
 }
 ```
 
-
 </div>
 </div>
 
@@ -282,6 +281,95 @@ No segundo caso, em que ocorreu um erro durante a solicitação, a mensagem incl
 <h2> API RESTful</h2>
 <div align="justify">
 
+Para a comunicação com o broker por meio de uma API, foram desenvolvidos endpoints HTTP que permitem realizar requisições ao broker. Este tópico explicará as seis rotas de acesso. Observação: as rotas estão configuradas para "localhost", mas devem ser acessadas com base no IP do broker. 
+
+**URL principal:** `https://localhost:5002`
+
+<h3> Listar dispositivos:</h3>
+
+- **Método:** GET
+- **Rota:** `/devices`
+- **Descrição:** Retorna uma lista de todos os dispositivos conectados ao broker.
+- **exemplo de reposta:**
+```json
+[
+    "192.168.1.100",
+    "192.168.1.101",
+    "192.168.1.102"
+]
+```
+<h3>Detalhes do dispositivo</h3>
+
+- **Método:** GET
+- **Rota:** `/devices/string:ip`
+- **Descrição:** Retorna informações detalhadas sobre um dispositivo específico com o endereço IP fornecido.
+- **exemplo de reposta**: 
+```json
+{
+	"ip": "192.168.25.107",
+	"name": "SETNA00",
+	"opções": []
+	"success": true,
+	"tag": "sensor"
+}
+```
+<h3>Listar opções do dispositivo</h3>
+
+- **Método:** GET
+- **Rota:** `/devices/string:ip/options`
+- **Descrição:** Retorna uma lista das opções disponíveis para um dispositivo específico com o endereço IP fornecido.
+- **exemplo de reposta**:
+```json
+[
+	[
+		"ligar",
+		true
+	],
+	[
+		"desligar",
+		true
+	],
+]
+```
+<h3>Acessar uma opção do dispositivo: Pegar estado</h3>
+
+- **Método:** GET
+- **Rota:** `/string:ip/string:option`
+- **Descrição:** Retorna o estado atual de uma opção específica para o dispositivo com o endereço IP fornecido.
+- **exemplo de reposta**:
+```json
+{
+	"IP": "192.168.25.107",
+	"descript": "Temperatura atual: 32.0°C.",
+	"success": true
+}
+```
+<h3>Acessar uma opção do dispositivo: Alterar estado do dispositivo</h3>
+
+- **Método:** POST
+- **Rota:** `/devices/string:ip/string:option`
+- **Descrição:** Executa uma ação específica para o dispositivo com o endereço IP fornecido, conforme a opção especificada no corpo da solicitação.
+- **exemplo de reposta**:
+```json
+{
+	"IP": "192.168.25.107",
+	"descript": "Sensor ligado.",
+	"success": true
+}
+```
+<h3>Acessar uma opção do dispositivo: Alterar estado com um valor especifico</h3>
+
+- **Método:** POST
+- **Rota:** `/devices/string:ip/string:option/string:value`
+- **Descrição:** Executa uma ação específica para o dispositivo com o endereço IP fornecido e, opcionalmente, fornece um valor para a ação.
+- **exemplo de reposta**:
+```json
+{
+	"IP": "192.168.25.107",
+	"descript": "Velocidade definida para 80Km/h",
+	"success": true
+}
+```
 </div>
 </div>
 
