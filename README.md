@@ -65,11 +65,17 @@ O Docker oferece uma plataforma consistente para desenvolver, testar e implantar
 garantindo que os ambientes de desenvolvimento e produção sejam consistentes e reproduzíveis.
 
 <h3>IDE PyCharm</h3>
-A IDE PyCharm é um ambiente de desenvolvimento integrado projetado especificamente para Python. O PyCharm oferece uma ampla gama de recursos para aumentar a produtividade dos desenvolvedores, incluindo realce de sintaxe avançado, completamento automático de código, depuração integrada e suporte para controle de versão. Além disso, o PyCharm possui integração com o Docker, facilitando o desenvolvimento e a implantação de aplicativos Python em diversos ambientes.
+A IDE PyCharm é um ambiente de desenvolvimento integrado projetado especificamente para Python. O PyCharm oferece uma 
+ampla gama de recursos para aumentar a produtividade dos desenvolvedores, incluindo realce de sintaxe avançado, 
+completamento automático de código, depuração integrada e suporte para controle de versão. Além disso, o PyCharm possui
+integração com o Docker, facilitando o desenvolvimento e a implantação de aplicativos Python em diversos ambientes.
 
 <h3> Insomnia </h3>
 
-O Insomnia é uma ferramenta usada para testar APIs e atuar como cliente REST, simplificando o desenvolvimento de APIs. Com ele, os desenvolvedores podem criar, testar e depurar suas APIs de maneira eficiente, oferecendo suporte a diferentes métodos de requisição, autenticação, gerenciamento de variáveis e até mesmo a criação de fluxos de trabalho complexos.
+O Insomnia é uma ferramenta usada para testar APIs e atuar como cliente REST, simplificando o desenvolvimento de APIs.
+Com ele, os desenvolvedores podem criar, testar e depurar suas APIs de maneira eficiente, oferecendo suporte a 
+diferentes métodos de requisição, autenticação, gerenciamento de variáveis e até mesmo a criação de fluxos de trabalho 
+complexos.
 </div>
 </div>
 
@@ -82,15 +88,22 @@ Nessa seção, será apresentado a lógica de funcionamento do broker e dos disp
 <h3> Broker</h3>
 
 
-O broker é uma tecnologia que desempenha o papel de intermediário na comunicação entre diferentes sistemas ou dispositivos. No contexto deste projeto, o broker foi utilizado como um mensageiro, atuando como um servidor centralizado onde os dispositivos e a aplicação do usuário se conectam para enviar e receber mensagens.
+O broker é uma tecnologia que desempenha o papel de intermediário na comunicação entre diferentes sistemas ou
+dispositivos. No contexto deste projeto, o broker foi utilizado como um mensageiro, atuando como um servidor 
+centralizado onde os dispositivos e a aplicação do usuário se conectam para enviar e receber mensagens.
 
-Para gerenciar esses dispositivos, o broker utiliza uma estrutura de dados que organiza todos os dispositivos com base em seus endereços IP, permitindo a diferenciação entre eles. Além disso, foram utilizados elementos de programação, como o uso de threads e cache de dados, para otimizar o desempenho do broker. Esses tópicos serão abordados em detalhes posteriormente.
+Para gerenciar esses dispositivos, o broker utiliza uma estrutura de dados que organiza todos os dispositivos com base
+em seus endereços IP, permitindo a diferenciação entre eles. Além disso, foram utilizados elementos de programação,
+como o uso de threads e cache de dados, para otimizar o desempenho do broker. Esses tópicos serão abordados em detalhes
+posteriormente.
 
-Por ser uma figura central, o endereço IP do broker deve ser inserido em cada dispositivo para que eles possam se conectar ao servidor. No projeto, essa configuração é realizada no arquivo <code>config.py</code>. Para acessar esse arquivo, siga as instruções de execução do projeto.
+As requisições do aplicação do usuário ao broker são feitas por meio de uma interface de API RESTful, que se comunica 
+com os elementos do broker para gerenciar as conexões de cada dispositivo de forma eficiente.
 
-As requisições do aplicação do usuário ao broker são feitas por meio de uma interface de API RESTful, que se comunica com os elementos do broker para gerenciar as conexões de cada dispositivo de forma eficiente.
-
-No projeto, o broker é composto por três arquivos principais: o arquivo do servidor (<code>Server/__init__.py</code>), que contém os métodos de controle e gerenciamento do servidor; a API (<code>API.py</code>), responsável por utilizar as funções do servidor e criar os endpoints para acesso HTTP; e o arquivo principal (<code>__main__.py</code>), onde esses dois arquivos são inicializados. A distribuição dos arquivos no diretório do broker é mostrada na imagem.
+No projeto, o broker é composto por três arquivos principais: o arquivo do servidor (<code>Server/__init__.py</code>),
+que contém os métodos de controle e gerenciamento do servidor; a API (<code>API.py</code>), responsável por utilizar as
+funções do servidor e criar os endpoints para acesso HTTP; e o arquivo principal (<code>__main__.py</code>), onde esses
+dois arquivos são inicializados. A distribuição dos arquivos no diretório do broker é mostrada na imagem.
 
 <p align="center">
   <img src="img/dirBroker.png" width = "243" />
@@ -98,7 +111,10 @@ No projeto, o broker é composto por três arquivos principais: o arquivo do ser
 <p align="center"><strong>Organização de arquivos relacionados ao broker</strong></p>
 
 <h3> Dispositivos</h3>
-Para simular os dispositivos no ambiente de software, foram empregados dois dispositivos virtuais: um sensor de temperatura e umidade, e um veículo (carro). Aqui, exploraremos como esses dispositivos são controlados tanto localmente, por meio de sua interface de controle, quanto remotamente.
+Para simular os dispositivos no ambiente de software, foram empregados dois dispositivos virtuais: um sensor
+de temperatura e umidade, e um veículo (carro). Aqui, exploraremos como esses dispositivos são controlados tanto
+localmente, por meio de sua interface de controle, quanto remotamente.
+
 <h4> Sensor</h4>
 Este dispositivo emula um sensor iot fictício, replicando o comportamento de um sensor real de temperatura e umidade. Em sua interface de controle, o sensor oferece o controle das seguintes características:
 
