@@ -407,11 +407,33 @@ A interface de controle IoT oferece acesso e gerenciamento remoto dos dispositiv
 
 <h3> Visualização da Aplicação</h3>
 
-A aplicação consiste em três telas distintas. A primeira é o menu principal, onde é possível visualizar os dispositivos conectados ao broker e acessar detalhes específicos de cada dispositivo. Ao visualizar os dispositivos, o usuário verá a quantidade total e informações resumidas sobre cada dispositivo, como tipo (sensor ou carro), nome e endereço IP.
+A aplicação consiste em três telas distintas. A primeira é o menu principal, onde é possível visualizar os dispositivos
+conectados ao broker e acessar detalhes específicos de cada dispositivo. Ao visualizar os dispositivos, o usuário verá 
+a quantidade total e informações resumidas sobre cada dispositivo, como tipo (sensor ou carro), nome e endereço IP.
 
-Ao optar por acessar um dispositivo específico, o usuário deverá fornecer o endereço IP correspondente. Em seguida, as opções disponíveis para o dispositivo serão recuperadas, permitindo ao usuário escolher entre elas. A aplicação permanece na tela de opções após cada requisição, aguardando novas interações do usuário ou a desconexão do dispositivo.
+Ao optar por acessar um dispositivo específico, o usuário deverá fornecer o endereço IP correspondente. 
+Em seguida, as opções disponíveis para o dispositivo serão recuperadas, permitindo ao usuário escolher entre elas. 
+A aplicação permanece na tela de opções após cada requisição, aguardando novas interações do usuário ou a desconexão 
+do dispositivo. As imagens a seguir ilustram as telas da aplicação:
 
-A organização do código segue uma arquitetura modular, dividida em dois módulos principais: um responsável pela visualização (<code>View.__init__.py </code>) e outro que gerencia o loop principal do programa (<code>__main__.py</code>). A estrutura do código é ilustrada na próxima imagem.
+<p align="center">
+  <img src="img/MainController.png" width = "600" />
+</p>
+<p align="center"><strong> Menu principal da interface de controle</strong></p>
+
+<p align="center">
+  <img src="img/VisualControlle.png" width = "600" />
+</p>
+<p align="center"><strong> Visualização de todos os dispositivos conectados</strong></p>
+
+<p align="center">
+  <img src="img/DeviceControlle.png" width = "600" />
+</p>
+<p align="center"><strong> Opções disponíveis para um dispositivo específico</strong></p>
+
+A organização do código segue uma arquitetura modular, dividida em dois módulos principais: um responsável pela 
+visualização (<code>View.__init__.py </code>) e outro que gerencia o loop principal do programa 
+(<code>__main__.py</code>). A estrutura do código é ilustrada na próxima imagem.
 
 </div>
 </div>
