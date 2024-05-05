@@ -78,6 +78,15 @@ Nessa seção, será apresentado a lógica de funcionamento do broker e dos disp
 
 <h3> Broker</h3>
 
+
+O broker é uma tecnologia que desempenha o papel de intermediário na comunicação entre diferentes sistemas ou dispositivos. No contexto deste projeto, o broker foi utilizado como um mensageiro, atuando como um servidor centralizado onde os dispositivos e a aplicação do usuário se conectam para enviar e receber mensagens.
+
+Para gerenciar esses dispositivos, o broker utiliza uma estrutura de dados que organiza todos os dispositivos com base em seus endereços IP, permitindo a diferenciação entre eles. Além disso, foram utilizados elementos de programação, como o uso de threads e cache de dados, para otimizar o desempenho do broker. Esses tópicos serão abordados em detalhes posteriormente.
+
+Por ser uma figura central, o endereço IP do broker deve ser inserido em cada dispositivo para que eles possam se conectar ao servidor. No projeto, essa configuração é realizada no arquivo config.py. Para acessar esse arquivo, siga as instruções de execução do projeto.
+
+As requisições do aplicação do usuário ao broker são feitas por meio de uma interface de API RESTful, que se comunica com os elementos do broker para gerenciar as conexões de cada dispositivo de forma eficiente.
+
 <h3> Dispositivos</h3>
 Para simular os dispositivos no ambiente de software, foram empregados dois dispositivos virtuais: um sensor de temperatura e umidade, e um veículo (carro). Aqui, exploraremos como esses dispositivos são controlados tanto localmente, por meio de sua interface de controle, quanto remotamente.
 <h4> Sensor</h4>
@@ -123,7 +132,7 @@ O Carro é responsável por simular um veículo IoT, replicando diversos comport
 - **Visualização de dados:** Apresenta a ficha técnica do carro, incluindo modelo e ano de fabricação, por exemplo. Quando em movimento, exibe a distância percorrida a partir do ponto de origem, juntamente com todos os atributos do veículo.
 
 <p align="center">
-  <img src="img/InterfaceCarro.png" width = "600" />
+  <img src="img/InterfaceCarro.png" width = "800" />
 </p>
 <p align="center"><strong>Inteface de controle do Carro</strong></p>
 
@@ -155,7 +164,7 @@ O carro também é capaz de ser gerenciado remotamente, compartilhando caracter�
 </div>
 
 <p align="center">
-<strong> Tabela com os comando remotos do carro</strong> </p>
+<strong> Tabela com os comando remotos do carro </strong> </p>
 
 </div>
 </div>
