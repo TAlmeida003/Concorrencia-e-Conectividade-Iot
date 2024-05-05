@@ -247,8 +247,8 @@ As mensagens enviadas e recebidas têm um formato específico. Ao serem recebida
 
 ```json
 {
-"option": "",
-"value": ""
+  "option": "",
+  "value": ""
 }
 ```
 
@@ -257,9 +257,9 @@ A transmissão de dados possui dois modelos, dependendo do resultado da solicita
 
 ```json
 {
-"success": true,
-"IP": "",
- "descript": ""
+  "success": true,
+  "IP": "",
+  "descript": ""
 }
 ```
 
@@ -267,10 +267,10 @@ No segundo caso, em que ocorreu um erro durante a solicitação, a mensagem incl
 
 ```json
 {
-"success": false,
-"code": 400,
-"descript": "",
-"IP": ""
+  "success": false,
+  "code": 400,
+  "descript": "",
+  "IP": ""
 }
 ```
 
