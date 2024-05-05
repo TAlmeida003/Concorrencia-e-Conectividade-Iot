@@ -17,7 +17,7 @@
 <div id="sumario">
 	<ul>
         <li><a href="#requisitos"> Requisitos de Implementação do Projeto </a></li>
-        <li><a href="#Software"> Tecnologias Utilizadas </a></li>
+        <li><a href="#Software"> Softwares Utilizadas </a></li>
         <li><a href="#Broker"> Broker e Dispositivos </a></li>
         <li><a href="#Conectividade"> Interface de Rede </a></li>
         <li><a href="#API"> API RESTful </a></li>
@@ -243,6 +243,8 @@ Por outro lado, os dispositivos atuam como clientes, solicitando ao broker o env
 
 - O broker, após receber os dados, cria um ambiente para gerenciar aquele dispositivo e continua aguardando novas solicitações e pedidos de acesso aos dispositivos.
 
+> **Observação:** Ao inicializar, os dispositivos estabelecem conexão com o broker seguindo tais passos. No entanto, se a conexão inicial falhar, o dispositivo precisará ser conectado manualmente. Por outro lado, se a conexão for estabelecida com sucesso e ocorrer uma desconexão subsequente, o dispositivo tentará automaticamente reconectar-se ao broker. Essa funcionalidade automática garante uma maior robustez e confiabilidade na comunicação entre dispositivos e o broker.
+
 As mensagens enviadas e recebidas têm um formato específico. Ao serem recebidas pelo dispositivo, elas contêm a requisição desejada (option) e o valor a ser inserido, se necessário (value):
 
 ```json
@@ -272,6 +274,23 @@ No segundo caso, em que ocorreu um erro durante a solicitação, a mensagem incl
   "descript": "",
   "IP": ""
 }
+```
+<h3> Configuração da Rede</h3>
+Para a comunicação entre os dispositivos e o broker, é essencial configurar o endereço IP do broker no arquivo de configuração da rede <code>config.py</code>. Este arquivo é um script Python que contém as variáveis de configuração do sistema, como o endereço IP do broker e as portas de comunicação.
+
+Se houver uma mudança no endereço IP do broker, é necessário atualizar o arquivo de configuração com o novo endereço IP. Abaixo, é apresentado um exemplo do arquivo de configuração:
+
+```python
+
+# Configurações de Rede
+HOST: str = '192.168.25.107'  # IP do broker
+PORT_TCP: int = 5001  # Porta TCP
+PORT_UDP: int = 5000  # Porta UDP
+
+# Configurações do Servidor Flask e Endereço de Acesso
+HOST_FLASK: str = '0.0.0.0'  # IP do servidor Flask
+PORT_FLASK: int = 5002  # Porta do servidor Flask
+HOST_HTTP: str = f'http://{HOST}:{PORT_FLASK}'  # Endereço de acesso ao servidor Flask
 ```
 
 </div>
@@ -373,6 +392,13 @@ Para a comunicação com o broker por meio de uma API, foram desenvolvidos endpo
 </div>
 </div>
 
+<div id="usuario">
+<h2> Aplicação de Controle iot</h2>
+<div align="justify">
+
+</div>
+</div>
+
 <div id="logica">
 <h2> Lógica de Funcionamento do Projeto</h2>
 <div align="justify">
@@ -380,12 +406,6 @@ Para a comunicação com o broker por meio de uma API, foram desenvolvidos endpo
 </div>
 </div>
 
-<div id="usuario">
-<h2> Demostração da Aplicação</h2>
-<div align="justify">
-
-</div>
-</div>
 
 <div id="conclusao">
 <h2> Conclusão</h2>
