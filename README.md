@@ -473,17 +473,43 @@ visualização (<code>View.__init__.py </code>) e outro que gerencia o loop prin
 <h2> Lógica de Funcionamento do Projeto</h2>
 <div align="justify">
  
+Para fornecer uma compreensão abrangente do funcionamento do projeto, esta seção explora tanto os aspectos de comunicação quanto os paradigmas relacionados à sua implementação.
+
+<h3>Arquitetura de Comunicação</h3>
+
+A arquitetura de comunicação é fundamental para o projeto, permitindo a troca eficiente de informações entre as três entidades principais: o Broker, a aplicação de controle e os dispositivos.
+
+A comunicação entre essas entidades segue uma sequência definida:
+
+1. **Aplicação de Controle:** Inicia o processo, enviando solicitações via protocolo HTTP para o Broker.
+
+2. **Broker:** Recebe as solicitações, interpreta-as e envia os comandos correspondentes para os dispositivos de destino via protocolo TCP/IP.
+
+3. **Dispositivos:** Interpretam as mensagens recebidas, executam as ações solicitadas e enviam mensagens de confirmação de volta ao Broker no mesmo padrão de comunicação.
+
+4. **Broker:** Recebe as mensagens dos dispositivos, processa-as e as retorna para a aplicação de controle por meio do protocolo HTTP.
+
+A interação entre essas entidades forma um ciclo de comunicação contínuo, possibilitando a visualização e o controle dos dados dos dispositivos. A ilustração a seguir oferece uma visão em alto nível dessa arquitetura de comunicação.
+
 <p align="center">
-  <img src="img/Arquitetura.png" width = "800" />
+  <img src="img/Arquitetura.png" width = "600" />
 </p>
 <p align="center"><strong>Arquitetura do projeto</strong></p>
 
+Para uma compreensão mais prática dessa comunicação, considere o seguinte caso de teste:
+
+- Um cliente acessa um dispositivo e solicita que ele seja ligado. O diagrama a seguir demonstra o processo de troca de dados entre as entidades.
+
 <p align="center">
-  <img src="img/ComunicacaoGeral.png" width = "800" />
+  <img src="img/ComunicacaoGeral.png" width = "700" />
 </p>
 <p align="center"><strong>Organização de arquivos relacionados à interface de controle</strong></p>
 </div>
 </div>
+
+<h3>Concorrência, Desempenho e Confiabilidade</h3>
+
+
 
 
 <div id="conclusao">
