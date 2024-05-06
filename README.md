@@ -574,10 +574,11 @@ seguintes comandos:
 
 Após construir as imagens Docker, execute o seguinte comando para iniciar os containers Docker:
 
-    docker run -iti --name user user
-    docker run -iti --name car car
-    docker run -iti --name sensor sensor
-    docker run -iti --name broker broker --network  host
+    docker run -iti user
+    docker run -iti car
+    docker run -iti sensor
+    docker run --network  host -iti broker                                                                                               
+
 
 <h4> Docker Pull: </h4>
 Para obter a imagem Docker pré-construída, execute o seguinte comando:
