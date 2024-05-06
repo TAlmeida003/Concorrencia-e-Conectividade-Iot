@@ -21,8 +21,8 @@
         <li><a href="#Broker"> Broker e Dispositivos </a></li>
         <li><a href="#Conectividade"> Interface de Rede </a></li>
         <li><a href="#API"> API RESTful </a></li>
+        <li><a href="#usuario"> Aplicação de Controle iot</a></li>
         <li><a href="#logica"> Lógica de Funcionamento do Projeto</a></li>
-        <li><a href="#usuario"> Demostração da Aplicação</a></li>
         <li><a href="#conclusao"> Conclusão </a></li>
         <li><a href="#execucaoProjeto"> Execução do Projeto </a></li>
         <li><a href="#referencias"> Referências </a></li>
@@ -242,6 +242,11 @@ No projeto, foram empregados dois esquemas de conexão: **TCP** (*Transmission C
 
 Por outro lado, a conexão UDP foi escolhida por dois motivos. Primeiramente, como os dispositivos simulam dispositivos reais, o envio de dados é realizado como UDP, uma vez que eles enviam esses dados constantemente, garantindo que, mesmo se alguns dados forem perdidos, isso não afetará o sistema devido à sua constância. Além disso, o envio desses dados é mais rápido, tornando o processo mais eficiente. Assim, as requisições de pedidos de dados são realizadas em modo UDP, conforme mostrado anteriormente.
 
+<p align="center">
+  <img src="img/ComunicacaoBrokerDevice.png" width = "600" />
+</p>
+<p align="center"><strong>Esquema de comunicação entre broker e dispositivos</strong></p>
+
 
 <h3>Camada de aplicação</h3>
 
@@ -259,14 +264,19 @@ Por outro lado, os dispositivos atuam como clientes, solicitando ao broker o env
 
 - O broker, após receber os dados, cria um ambiente para gerenciar aquele dispositivo e continua aguardando novas solicitações e pedidos de acesso aos dispositivos.
 
+<p align="center">
+  <img src="img/ConexaoEntreBrokerDevice.png" width = "600" />
+</p>
+<p align="center"><strong>Esquema de conexão entre broker e dispositivos</strong></p>
+
 > **Observação:** Ao inicializar, os dispositivos estabelecem conexão com o broker seguindo tais passos. No entanto, se a conexão inicial falhar, o dispositivo precisará ser conectado manualmente. Por outro lado, se a conexão for estabelecida com sucesso e ocorrer uma desconexão subsequente, o dispositivo tentará automaticamente reconectar-se ao broker. Essa funcionalidade automática garante uma maior robustez e confiabilidade na comunicação entre dispositivos e o broker.
 
 As mensagens enviadas e recebidas têm um formato específico. Ao serem recebidas pelo dispositivo, elas contêm a requisição desejada (option) e o valor a ser inserido, se necessário (value):
 
 ```json
 {
-  "option": "",
-  "value": ""
+    "option": "",
+    "value": ""
 }
 ```
 
@@ -275,9 +285,9 @@ A transmissão de dados possui dois modelos, dependendo do resultado da solicita
 
 ```json
 {
-  "success": true,
-  "IP": "",
-  "descript": ""
+    "success": true,
+    "IP": "",
+    "descript": ""
 }
 ```
 
@@ -285,10 +295,10 @@ No segundo caso, em que ocorreu um erro durante a solicitação, a mensagem incl
 
 ```json
 {
-  "success": false,
-  "code": 400,
-  "descript": "",
-  "IP": ""
+    "success": false,
+    "code": 400,
+    "descript": "",
+    "IP": ""
 }
 ```
 <h3> Configuração da Rede</h3>
@@ -350,7 +360,7 @@ Antes de detalharmos as rotas, é importante destacar os códigos de status HTTP
 {
 	"ip": "192.168.25.107",
 	"name": "SETNA00",
-	"opções": []
+	"opções": [],
 	"success": true,
 	"tag": "sensor"
 }
@@ -462,7 +472,11 @@ visualização (<code>View.__init__.py </code>) e outro que gerencia o loop prin
 <div id="logica">
 <h2> Lógica de Funcionamento do Projeto</h2>
 <div align="justify">
-
+ 
+<p align="center">
+  <img src="img/ComunicacaoGeral.png" width = "800" />
+</p>
+<p align="center"><strong>Organização de arquivos relacionados à interface de controle</strong></p>
 </div>
 </div>
 
