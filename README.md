@@ -474,6 +474,11 @@ visualização (<code>View.__init__.py </code>) e outro que gerencia o loop prin
 <div align="justify">
  
 <p align="center">
+  <img src="img/Arquitetura.png" width = "800" />
+</p>
+<p align="center"><strong>Arquitetura do projeto</strong></p>
+
+<p align="center">
   <img src="img/ComunicacaoGeral.png" width = "800" />
 </p>
 <p align="center"><strong>Organização de arquivos relacionados à interface de controle</strong></p>
