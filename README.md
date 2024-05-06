@@ -265,7 +265,7 @@ Por outro lado, os dispositivos atuam como clientes, solicitando ao broker o env
 - O broker, após receber os dados, cria um ambiente para gerenciar aquele dispositivo e continua aguardando novas solicitações e pedidos de acesso aos dispositivos.
 
 <p align="center">
-  <img src="img/ConexaoEntreBrokerDevice.png" width = "600" />
+  <img src="img/ConexaoEntreBrokerDevice.png" width = "700" />
 </p>
 <p align="center"><strong>Esquema de conexão entre broker e dispositivos</strong></p>
 
