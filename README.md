@@ -531,6 +531,7 @@ O uso de threads garante o processamento pseudo-paralelo das requisições. Com 
 
 
 <br>
+<br>
 
 >**Observação:** É importante observar que, embora o uso de threads otimize o desempenho do processo, ele também pode demandar recursos 
 significativos do computador. Um número excessivamente alto de dispositivos conectados pode sobrecarregar o broker e 
