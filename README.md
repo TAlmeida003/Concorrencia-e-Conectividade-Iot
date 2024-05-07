@@ -5,6 +5,14 @@
 <div id="sobre-o-projeto"> 
 <h2> Descrição do Projeto</h2>
 
+A Internet das Coisas (*Internet of Things*, IoT) representa uma revolução tecnológica ao conectar dispositivos à internet, transformando nossa interação com o mundo e prometendo inovação e eficiência em diversos setores. Em resposta a essa importância, este projeto propõe o desenvolvimento de um serviço que facilite a comunicação entre dispositivos e aplicações dependentes de seus dados, além de possibilitar o controle desses dispositivos.
+
+O sistema será implementado através de um serviço de broker, permitindo a troca de mensagens entre os clientes do servidor utilizando subsistemas de rede **TCP/IP**. Dessa forma, o projeto se estrutura em três entidades distintas, cada uma com requisitos específicos:
+
+- **Aplicação de controle:** Uma interface intuitiva que permita o controle remoto de dispositivos e a visualização dos dados gerados por eles.
+- **Dispositivo virtual:** Deve garantir uma abordagem confiável para o gerenciamento de dados e uma abordagem não confiável para o envio de dados. Além disso, deve oferecer uma interface de controle para gerenciar o dispositivo localmente.
+- **Servidor broker:** Implementação de uma **API RESTful** que viabilize a troca de dados e comandos entre a aplicação e os dispositivos, garantindo uma comunicação eficiente e segura.
+
 </div>
 </div>
 
@@ -16,7 +24,6 @@
 <h1 align="center"> Sumário </h1>
 <div id="sumario">
 	<ul>
-        <li><a href="#requisitos"> Requisitos de Implementação do Projeto </a></li>
         <li><a href="#Software"> Softwares Utilizadas </a></li>
         <li><a href="#Broker"> Broker e Dispositivos </a></li>
         <li><a href="#Conectividade"> Interface de Rede </a></li>
@@ -29,12 +36,6 @@
 	</ul>	
 </div>
 
-<div id="requisitos"> 
-<h2> Requisitos de Implementação do Projeto</h2>
-<div align="justify"> 
-
-</div>
-</div>
 
 <div id="Software">
 <h2> Softwares Utilizadas</h2>
@@ -562,6 +563,13 @@ dependendo da entidade envolvida, seja ela síncrona ou assíncrona.
 <div id="conclusao">
 <h2> Conclusão</h2>
 <div align="justify">
+
+Com base nas discussões anteriores e nos tópicos abordados, podemos concluir que o projeto de controle de dispositivos IoT é uma solução eficaz para as demandas crescentes por comunicação confiável entre dispositivos conectados à Internet. A implementação de um serviço broker, juntamente com a comunicação via protocolos TCP/IP e RESTful API, oferece uma plataforma sólida para a troca de mensagens entre dispositivos e aplicações de controle.
+
+Os requisitos do projeto, como a criação de uma interface de controle intuitiva e a implementação de um servidor broker com API RESTful, demonstram a importância de uma abordagem integrada e escalável para lidar com os desafios da IoT. A ênfase na concorrência, desempenho e confiabilidade, refletida pelo uso de threads, técnicas de otimização e estratégias de garantia de conexão, destaca o compromisso em fornecer uma solução robusta e eficaz para a gestão de dispositivos IoT.
+
+Em resumo, este projeto não apenas atendeu às expectativas de comunicação e controle de dispositivos IoT, mas também ofereceu insights valiosos sobre o projeto e desenvolvimento de sistemas escaláveis e confiáveis para atender às necessidades da sociedade conectada.
+
 </div>
 </div>
 
