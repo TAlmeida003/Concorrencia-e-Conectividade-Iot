@@ -78,6 +78,7 @@ O Docker oferece uma plataforma consistente para desenvolver, testar e implantar
 garantindo que os ambientes de desenvolvimento e produção sejam consistentes e reproduzíveis.
 
 <h3>IDE PyCharm</h3>
+
 A IDE *PyCharm* é um ambiente de desenvolvimento integrado projetado especificamente para *Python*. O *PyCharm* oferece uma 
 ampla gama de recursos para aumentar a produtividade dos desenvolvedores, incluindo realce de sintaxe avançado, 
 completamento automático de código, depuração integrada e suporte para controle de versão. Além disso, o PyCharm possui
@@ -132,11 +133,13 @@ Ao iniciar o *broker*, é exibido uma mesagem avisando que o servidor foi inicia
 <p align="center"><strong>Interface de controle do broker</strong></p>
 
 <h3> Dispositivos</h3>
+
 Para simular os dispositivos no ambiente de software, foram empregados dois dispositivos virtuais: um sensor
 de temperatura e umidade, e um veículo (carro). Aqui, exploraremos como esses dispositivos são controlados tanto
 localmente, por meio de sua interface de controle, quanto remotamente.
 
 <h4> Sensor</h4>
+
 Este dispositivo emula um sensor iot fictício, replicando o comportamento de um sensor real de temperatura e umidade. 
 Em sua interface de controle, o sensor oferece o controle das seguintes características:
 
@@ -177,6 +180,7 @@ O sensor também é projetado para ser controlado remotamente. Por comandos espe
 <strong> Tabela com os comando remotos do sensor</strong> </p>
 
 <h4> Carro </h4>
+
 O Carro é responsável por simular um veículo IoT, replicando diversos comportamentos de um carro real. Em sua interface de controle, oferece funcionalidades semelhantes ao sensor, como controle de estado, controle de conectividade e visualização de dados. Além disso, inclui outras características:
 
 - **Controle de dados:** Permite definir a velocidade de movimentação (de 0 a 220 km/h), o nível de bateria (de 0 a 100%), e a quantidade de gasolina (de 0 a 55 litros).
@@ -360,6 +364,7 @@ Antes de detalharmos as rotas, é importante destacar os códigos de status HTTP
 - **200:** Indica que a requisição foi executada com sucesso.
 - **400:** Alerta sobre falhas ou erros na execução do pedido.
 - **404:** Indica que o dispositivo ou endpoint solicitado não foi encontrado.
+
 <h3> Listar dispositivos:</h3>
 
 - **Método:** GET
@@ -445,6 +450,8 @@ Antes de detalharmos as rotas, é importante destacar os códigos de status HTTP
 	"success": true
 }
 ```
+>**Observção:** O arquivo de teste da API é acessado atráves do *Insomnia*.
+
 </div>
 </div>
 
@@ -546,10 +553,12 @@ Esta abordagem permite que o sistema seja escalável e capaz de lidar com inúme
 simultaneamente, garantindo uma experiência de uso estável e eficiente.
 
 <h3> Desempenho</h3>
+
 O desempenho do projeto depende diretamente da eficiência da conexão e do processamento das requisições. Para otimizar
 a eficiência da rede, são utilizadas duas técnicas principais.
 
 <h4>Threads</h4>
+
 O uso de threads garante o processamento pseudo-paralelo das requisições. Com *threads*, é possível executar múltiplas operações simultaneamente, o que permite que o broker atenda a várias solicitações de dispositivos e clientes de forma eficiente. Isso significa que não é necessário esperar que uma solicitação seja concluída para lidar com a próxima, tornando o processo de comunicação mais ágil e responsivo. Além disso, o uso de threads exige uma sincronização adequada entre as partes (uso de *flags*) para evitar conflitos com a estrutura global de dados e garantir a integridade do sistema.
 
 
