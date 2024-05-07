@@ -127,7 +127,7 @@ Ao iniciar o *broker*, é exibido uma mesagem avisando que o servidor foi inicia
 é mostrado o endereço IP e a porta do servidor, essenciais para a conexão dos dispositivos e da aplicação do usuário.
 
 <p align="center">
-  <img src="img/interfaceBroker.png width = "600" />
+  <img src="img/interfaceBroker.png" width = "600" />
 </p>
 <p align="center"><strong>Interface de controle do broker</strong></p>
 
