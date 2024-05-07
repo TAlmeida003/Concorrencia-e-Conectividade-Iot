@@ -504,8 +504,6 @@ Para uma compreensão mais prática dessa comunicação, considere o seguinte ca
   <img src="img/ComunicacaoGeral.png" width = "800" />
 </p>
 <p align="center"><strong>Organização de arquivos relacionados à interface de controle</strong></p>
-</div>
-</div>
 
 <h3>Concorrência, Desempenho e Confiabilidade</h3>
 
@@ -531,7 +529,10 @@ a eficiência da rede, são utilizadas duas técnicas principais.
 <h4>Threads</h4>
 O uso de threads garante o processamento pseudo-paralelo das requisições. Com threads, é possível executar múltiplas operações simultaneamente, o que permite que o broker atenda a várias solicitações de dispositivos e clientes de forma eficiente. Isso significa que não é necessário esperar que uma solicitação seja concluída para lidar com a próxima, tornando o processo de comunicação mais ágil e responsivo. Além disso, o uso de threads exige uma sincronização adequada entre as partes (uso de flags) para evitar conflitos com a estrutura global de dados e garantir a integridade do sistema.
 
-> **Observação:** É importante observar que, embora o uso de threads otimize o desempenho do processo, ele também pode demandar recursos 
+
+<br>
+
+>**Observação:** É importante observar que, embora o uso de threads otimize o desempenho do processo, ele também pode demandar recursos 
 significativos do computador. Um número excessivamente alto de dispositivos conectados pode sobrecarregar o broker e 
 levar a falhas de desempenho.
 
@@ -544,7 +545,9 @@ armazenamento em cache.
 
 <h3> Confiabilidade</h3>
 
-Garantir uma conexão confiável é essencial para o bom funcionamento do sistema, exigindo métodos eficazes para manter todas as partes conectadas e sincronizadas. No projeto, a confiabilidade da conexão é abordada de diversas maneiras, dependendo da entidade envolvida, seja ela síncrona ou assíncrona.
+Garantir uma conexão confiável é essencial para o bom funcionamento do sistema, exigindo métodos eficazes para manter
+todas as partes conectadas e sincronizadas. No projeto, a confiabilidade da conexão é abordada de diversas maneiras, 
+dependendo da entidade envolvida, seja ela síncrona ou assíncrona.
 	
 - **Aplicação de Controle IoT:** Para verificar se o broker está acessível, a aplicação de controle realiza solicitações às rotas específicas e monitora as respostas ou o tempo de espera da requisição. Se uma resposta válida não for recebida dentro do tempo limite ou se ocorrer um erro de conexão, o controlador identifica que o broker não está disponível no momento.
 
@@ -552,6 +555,8 @@ Garantir uma conexão confiável é essencial para o bom funcionamento do sistem
 	
 - **Dispositivo:** Para garantir sua própria conexão com o broker, o dispositivo realiza verificações periódicas em intervalos regulares, geralmente a cada 5 segundos. Essas verificações consistem em tentativas de conexão com o broker, que são imediatamente fechadas pelo broker sem aceitação. Se o dispositivo não conseguir se conectar dentro do intervalo de tempo especificado, ele considera que a conexão com o broker foi perdida e fecha a conexão atual, iniciando automaticamente uma nova tentativa de conexão com o broker.
 
+</div>
+</div>
 
 <div id="conclusao">
 <h2> Conclusão</h2>
