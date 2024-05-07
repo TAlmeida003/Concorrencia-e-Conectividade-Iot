@@ -101,9 +101,11 @@ def get_option_Serve_tcp(pack_msg: dict, car: Car) -> None:
             car.start_movement()
             resposta["descript"] = "Veículo em movimento"
         elif pack_msg["option"] == car.server_option[10][0]:  # ativa buzina
-            pass
+            car.on_buzzer()
+            resposta["descript"] = "Buzina ativada"
         elif pack_msg["option"] == car.server_option[11][0]:  # desativar buzina
-            pass
+            car.off_buzzer()
+            resposta["descript"] = "Buzina desativada"
         elif pack_msg["option"] == car.server_option[12][0]:  # distancia
             if car.visual:
                 car.get_request()

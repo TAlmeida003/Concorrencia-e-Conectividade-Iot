@@ -137,9 +137,9 @@ def get_option(user_choice: int, car: Car) -> None:
         elif user_choice == 15:  # DESATIVAR SENSOR DE COLISÃO
             car.end_collision()
         elif user_choice == 16:  # ATIVA BUZINA
-            pass
+            car.on_buzzer()
         elif user_choice == 17:  # DESATIVAR BUZINA
-            pass
+            car.off_buzzer()
         elif user_choice == 19:
             car.visual = True
             car.get_request()

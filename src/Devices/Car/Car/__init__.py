@@ -29,6 +29,7 @@ class Car(ConnectionDevice):
         self.distance: float = 0
         self.moving: bool = False
         self.collision: bool = False
+        self.buss: bool = False
 
         self.ip: str = socket.gethostbyname(socket.gethostname())
         self.server_option: list[tuple[str, bool, str]] = [("ligar", True, "POST"), ("desligar", True, "POST"),
@@ -103,6 +104,20 @@ class Car(ConnectionDevice):
         elif not self.state:
             raise RuntimeError("O veículo está desligado")
         self.direction = "frente"
+
+    def on_buzzer(self) -> None:
+        if self.buss:
+            raise RuntimeError("A buzina já está ativa")
+        elif not self.state:
+            raise RuntimeError("O veículo está desligado")
+        self.buss = True
+
+    def off_buzzer(self) -> None:
+        if not self.buss:
+            raise RuntimeError("A buzina já está desativada")
+        elif not self.state:
+            raise RuntimeError("O veículo está desligado")
+        self.buss = False
 
     def go_backward(self) -> None:
         if self.direction == "trás":
@@ -219,7 +234,6 @@ class Car(ConnectionDevice):
     def get_status(self) -> str:
         return f"Modelo: {self.__model__} - Marca: {self.__brand__} - Cor: {self.color} - Ano: {self.year}"
 
-
     def end(self) -> None:
         self.exit = True
         self.disconnectBroker()
@@ -263,9 +277,9 @@ class Car(ConnectionDevice):
         print()
 
         View.get_baseboard()
-        print(f"|{'Marca': ^16}|{'Modelo': ^16}|{'Cor': ^16}|".center(170))
+        print(f"|{'Marca': ^16}|{'Modelo': ^16}|{'Cor': ^16}|{'Buzina': ^16}|".center(170))
         View.get_baseboard()
-        print(f"|{self.__brand__:^16}|{self.__model__:^16}|{self.color: ^16}|".center(170))
+        print(f"|{self.__brand__:^16}|{self.__model__:^16}|{self.color: ^16}|{self.buss: ^16}|".center(170))
         View.get_baseboard()
         print()
 
