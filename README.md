@@ -450,7 +450,6 @@ Antes de detalharmos as rotas, é importante destacar os códigos de status HTTP
 	"success": true
 }
 ```
->**Observção:** O arquivo de teste da API é acessado atráves do *Insomnia*.
 
 </div>
 </div>
@@ -661,26 +660,26 @@ seguintes comandos:
 
 Após construir as imagens Docker, execute o seguinte comando para iniciar os containers Docker:
 
-    docker run -iti user
-    docker run -iti car
-    docker run -iti sensor
+    docker run --network  host -iti user
+    docker run --network  host -iti car
+    docker run --network  host -iti sensor
     docker run --network  host -iti broker
 
 
 <h4> Docker Pull: </h4>
 Para obter a imagem Docker pré-construída, execute o seguinte comando:
 
-    docker pull talmeida003/concorrencia-e-conectividade-iot:broker
-    docker pull talmeida003/concorrencia-e-conectividade-iot:car
-    docker pull talmeida003/concorrencia-e-conectividade-iot:sensor
-    docker pull talmeida003/concorrencia-e-conectividade-iot:user
+    docker pull thiago003/broker:broker
+    docker pull thiago003/car:car
+    docker pull thiago003/sensor:sensor
+    docker pull thiago003/user:user
 
 Após obter as imagens Docker, execute o seguinte comando para iniciar os containers Docker:
 
-    docker run -p talmeida003/concorrencia-e-conectividade-iot:broker --network host
-    docker run -p talmeida003/concorrencia-e-conectividade-iot:car
-    docker run -p talmeida003/concorrencia-e-conectividade-iot:sensor
-    docker run -p talmeida003/concorrencia-e-conectividade-iot:user
+    docker run --network host -iti thiago003/broker:broker 
+    docker run --network host -iti thiago003/car:car 
+    docker run --network host -iti thiago003/sensor:sensor 
+    docker run --network host -iti thiago003/user:user
 
 </div>
 </div>
