@@ -501,7 +501,7 @@ Para uma compreensão mais prática dessa comunicação, considere o seguinte ca
 - Um cliente acessa um dispositivo e solicita que ele seja ligado. O diagrama a seguir demonstra o processo de troca de dados entre as entidades.
 
 <p align="center">
-  <img src="img/ComunicacaoGeral.png" width = "700" />
+  <img src="img/ComunicacaoGeral.png" width = "800" />
 </p>
 <p align="center"><strong>Organização de arquivos relacionados à interface de controle</strong></p>
 </div>
@@ -509,7 +509,48 @@ Para uma compreensão mais prática dessa comunicação, considere o seguinte ca
 
 <h3>Concorrência, Desempenho e Confiabilidade</h3>
 
+Nesta tópico, abordamos três aspectos essenciais para garantir a eficácia e a estabilidade do sistema: concorrência, 
+desempenho e confiabilidade.
 
+<h3> Concorrência</h3>
+
+A concorrência é a capacidade de um sistema lidar com múltiplas tarefas simultaneamente. No contexto deste projeto, 
+isso se reflete na capacidade do broker gerenciar vários dispositivos de forma simultânea. Para garantir isso,
+utilizamos threads na implementação do broker, permitindo que cada dispositivo seja gerenciado de forma independente,
+recebendo e processando dados sem interferir no funcionamento dos demais dispositivos. Além disso, o 
+framework **Flask** facilita o gerenciamento das solicitações concorrentes, garantindo um funcionamento consistente do
+sistema, mesmo com múltiplos clientes conectados.
+
+Esta abordagem permite que o sistema seja escalável e capaz de lidar com inúmeros dispositivos e usuários 
+simultaneamente, garantindo uma experiência de uso estável e eficiente.
+
+<h3> Desempenho</h3>
+O desempenho do projeto depende diretamente da eficiência da conexão e do processamento das requisições. Para otimizar
+a eficiência da rede, são utilizadas duas técnicas principais.
+
+<h4>Threads</h4>
+O uso de threads garante o processamento pseudo-paralelo das requisições. Com threads, é possível executar múltiplas operações simultaneamente, o que permite que o broker atenda a várias solicitações de dispositivos e clientes de forma eficiente. Isso significa que não é necessário esperar que uma solicitação seja concluída para lidar com a próxima, tornando o processo de comunicação mais ágil e responsivo. Além disso, o uso de threads exige uma sincronização adequada entre as partes (uso de flags) para evitar conflitos com a estrutura global de dados e garantir a integridade do sistema.
+
+> **Observação:** É importante observar que, embora o uso de threads otimize o desempenho do processo, ele também pode demandar recursos 
+significativos do computador. Um número excessivamente alto de dispositivos conectados pode sobrecarregar o broker e 
+levar a falhas de desempenho.
+
+<h4>Cache</h4>
+Outra técnica importante para otimizar o desempenho é o uso de cache. O cache permite armazenar dados frequentemente 
+acessados em memória, reduzindo a necessidade de acessar recursos mais lentos, como o disco ou a rede. No contexto 
+deste projeto, são armazenados dados como as opções dos dispositivos e informações básicas, como o tipo de dispositivo 
+e o endereço IP. Esses dados são frequentemente solicitados e raramente mudam, tornando-os candidatos ideais para o
+armazenamento em cache.
+
+<h3> Confiabilidade</h3>
+
+Garantir uma conexão confiável é essencial para o bom funcionamento do sistema, exigindo métodos eficazes para manter todas as partes conectadas e sincronizadas. No projeto, a confiabilidade da conexão é abordada de diversas maneiras, dependendo da entidade envolvida, seja ela síncrona ou assíncrona.
+	
+- **Aplicação de Controle IoT:** Para verificar se o broker está acessível, a aplicação de controle realiza solicitações às rotas específicas e monitora as respostas ou o tempo de espera da requisição. Se uma resposta válida não for recebida dentro do tempo limite ou se ocorrer um erro de conexão, o controlador identifica que o broker não está disponível no momento.
+
+- **Broker:** O broker desempenha um papel crucial na verificação da conexão dos dispositivos. Isso é feito de duas maneiras principais. Primeiramente, o broker envia mensagens aos dispositivos para confirmar sua conectividade e aguarda uma resposta válida. Em segundo lugar, é estabelecido um limite de tempo (timeout) para aguardar a resposta, garantindo que o processo não fique pendente indefinidamente.
+	
+- **Dispositivo:** Para garantir sua própria conexão com o broker, o dispositivo realiza verificações periódicas em intervalos regulares, geralmente a cada 5 segundos. Essas verificações consistem em tentativas de conexão com o broker, que são imediatamente fechadas pelo broker sem aceitação. Se o dispositivo não conseguir se conectar dentro do intervalo de tempo especificado, ele considera que a conexão com o broker foi perdida e fecha a conexão atual, iniciando automaticamente uma nova tentativa de conexão com o broker.
 
 
 <div id="conclusao">
@@ -577,7 +618,7 @@ Após construir as imagens Docker, execute o seguinte comando para iniciar os co
     docker run -iti user
     docker run -iti car
     docker run -iti sensor
-    docker run --network  host -iti broker                                                                                               
+    docker run --network  host -iti broker
 
 
 <h4> Docker Pull: </h4>

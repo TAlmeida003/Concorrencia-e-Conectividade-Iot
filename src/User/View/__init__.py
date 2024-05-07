@@ -51,7 +51,7 @@ def get_baseboard() -> None:
 
 def get_device(ip: str) -> dict:
     try:
-        dict_device = requests.get(f'{HOST_HTTP}/devices/{ip}')
+        dict_device = requests.get(f'{HOST_HTTP}/devices/{ip}', timeout=7)
         if dict_device.status_code != 200 and dict_device.status_code != 404:
             get_clear_prompt()
             get_report_error(dict_device.json()['descript'])
@@ -60,7 +60,7 @@ def get_device(ip: str) -> dict:
             get_clear_prompt()
             get_report_error("Dispositivo não encontrado.")
             return {}
-    except requests.exceptions.ConnectionError:
+    except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
         get_clear_prompt()
         get_report_error("Erro ao conectar com o servidor.")
         return {}
@@ -69,7 +69,6 @@ def get_device(ip: str) -> dict:
 
 
 def print_device_options(ip: str, dict_device: dict) -> bool:
-
     cabecalho()
     topico("Dispositivo")
     get_baseboard()
@@ -99,11 +98,12 @@ def print_device_options(ip: str, dict_device: dict) -> bool:
             return False
         elif 'definir' in str(list_options[int(option) - 1][0]).replace("-", " "):
             value = input((" " * 40) + "* Informe o valor desejado: ").replace(" ", "")
-            dict_option = requests.post(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}/{value}')
+            dict_option = requests.post(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}/{value}',
+                                        timeout=7)
         elif list_options[int(option) - 1][1]:
-            dict_option = requests.post(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}')
+            dict_option = requests.post(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}', timeout=7)
         else:
-            dict_option = requests.get(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}')
+            dict_option = requests.get(f'{HOST_HTTP}/devices/{ip}/{list_options[int(option) - 1][0]}', timeout=7)
 
         get_clear_prompt()
         if dict_option.status_code == 200:
@@ -121,14 +121,13 @@ def print_device_options(ip: str, dict_device: dict) -> bool:
         get_clear_prompt()
         get_report_error("Opção inválida! Tente novamente.")
         return True
-    except requests.exceptions.ConnectionError:
+    except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
         get_clear_prompt()
         get_report_error("Erro ao conectar com o servidor.")
         return False
 
 
 def print_options_devices(list_options: list[str]) -> None:
-
     text = ""
     for i in range(len(list_options)):
         text += f"{'[ ' + str(i + 1) + ' ] — ' + list_options[i][0].replace("-", " "): ^27}"
@@ -160,8 +159,8 @@ def print_device_list() -> None:
     get_clear_prompt()
 
     try:
-        list_ips = requests.get(f'{HOST_HTTP}/devices').json()
-    except requests.exceptions.ConnectionError:
+        list_ips = requests.get(f'{HOST_HTTP}/devices', timeout=7).json()
+    except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
         get_report_error("Erro ao conectar com o servidor.")
         return
 

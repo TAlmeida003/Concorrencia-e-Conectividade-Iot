@@ -38,15 +38,18 @@ class Server:
             if device_socket.recv(2048).decode() == "add":
                 dict_device: dict = {"ip": ip, "socket": device_socket, "data_udp": {}, "opcoes": {}}
                 if ip not in self.__dictConnectDevices__:
+                    device_socket.send("c".encode())
                     self.__dictConnectDevices__[ip] = dict_device
                     self.__dictConnectDevices__[ip]["opcoes"] = self.get_device_option(ip, "opcoes")["option"]
                     threading.Thread(target=self.get_recv_udp, args=[ip]).start()
                 else:
                     if not self.is_connect(ip):
+                        device_socket.send("c".encode())
                         self.__dictConnectDevices__[ip] = dict_device
                         self.__dictConnectDevices__[ip]["opcoes"] = self.get_device_option(ip, "opcoes")["option"]
                         threading.Thread(target=self.get_recv_udp, args=[ip]).start()
                     else:
+                        device_socket.send("e".encode())
                         device_socket.close()
 
     def get_device_option(self, ip: str, option: str, value: str = "") -> dict:
@@ -87,11 +90,12 @@ class Server:
     def is_connect(self, ip_device) -> bool:
         try:
             pack_msg: dict = {"option": "teste", "value": ""}
+            self.__dictConnectDevices__[ip_device]["socket"].settimeout(5)
             self.__dictConnectDevices__[ip_device]["socket"].send(pack_msg.__str__().encode())
             if self.__dictConnectDevices__[ip_device]["socket"].recv(2048).decode() == "":
                 raise socket.error("")
             return True
-        except socket.error:
+        except (socket.error, socket.timeout):
             self.__dictConnectDevices__[ip_device]["socket"].close()
             self.__dictConnectDevices__.pop(ip_device)
             return False

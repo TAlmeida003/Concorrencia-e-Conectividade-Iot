@@ -12,6 +12,7 @@ class ConnectionDevice:
     def __init__(self):
         self.__tcp_connection__: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.__udp_connection__: socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
         self.__connected__: bool = False
         self.user_connected: bool = False
         self.auto_connect: bool = False
@@ -21,13 +22,18 @@ class ConnectionDevice:
         try:
             if not self.__connected__:
                 self.__tcp_connection__: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.__tcp_connection__.settimeout(4)
                 self.__tcp_connection__.connect((HOST, PORT_TCP))
+                self.__tcp_connection__.settimeout(None)
                 self.__tcp_connection__.send("add".encode())
-                self.__connected__ = True
-                self.user_connected: bool = True
+                if  self.__tcp_connection__.recv(2048).decode() == "c":
+                    self.__connected__ = True
+                    self.user_connected: bool = True
+                else:
+                    raise RuntimeError("Não foi possível conectar ao Broker.")
             else:
                 raise RuntimeError("O broker já está conectado.")
-        except socket.error:
+        except (socket.error, socket.timeout):
             self.disconnectBroker()
             raise RuntimeError("Não foi possível conectar ao Broker.")
 
@@ -44,8 +50,9 @@ class ConnectionDevice:
             raise RuntimeError("Broker desconectado")
 
         try:
+            self.__udp_connection__.settimeout(4)
             self.__udp_connection__.sendto(data.encode('utf-8'), (HOST, PORT_UDP))
-        except socket.error:
+        except (socket.error, socket.timeout):
             self.disconnectBroker()
             raise RuntimeError("Broker desconectado")
 
@@ -54,8 +61,9 @@ class ConnectionDevice:
             raise RuntimeError("Broker desconectado")
 
         try:
+            self.__tcp_connection__.settimeout(4)
             self.__tcp_connection__.send(data.encode('utf-8'))
-        except socket.error:
+        except (socket.error, socket.timeout):
             self.disconnectBroker()
             raise RuntimeError("Broker desconectado")
 
@@ -65,7 +73,7 @@ class ConnectionDevice:
 
         while self.__connected__:
             try:
-                self.__tcp_connection__.settimeout(5)
+                self.__tcp_connection__.settimeout(4)
                 msg: str = self.__tcp_connection__.recv(2048).decode('utf-8')
                 if msg == "":
                     self.disconnectBroker()
@@ -82,6 +90,7 @@ class ConnectionDevice:
     def is_connected_broker(self) -> bool:
         try:
             tcp_aux: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            tcp_aux.settimeout(4)
             tcp_aux.connect((HOST, PORT_TCP))
             tcp_aux.send("aux".encode())
             tcp_aux.close()
