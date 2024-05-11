@@ -698,5 +698,12 @@ Após obter as imagens Docker, execute o seguinte comando para iniciar os contai
 <h2> Referências</h2>
 <div align="justify">
 
+> Python. **threading — Thread-based parallelism**. Disponível em: <https://docs.python.org/3/library/threading.html>. Acesso em: 10 de maio de 2024.
+> Python. **socket — Low-level networking interface**. Disponível em: <https://docs.python.org/3/library/socket.html>. Acesso em: 10 de maio de 2024.
+> Python. **requests — HTTP for Humans**. Disponível em: <https://docs.python-requests.org/en/latest/>. Acesso em: 10 de maio de 2024.
+> Flask. **Flask — A Python Microframework**. Disponível em: <https://flask.palletsprojects.com/en/2.0.x/>. Acesso em: 10 de maio de 2024.
+> Docker. **Docker Documentation**. Disponível em: <https://docs.docker.com/>. Acesso em: 10 de maio de 2024.
+> Felipe Desh. **MÚLTIPLAS CONEXÕES COM SOCKET EM PYTHON** <https://www.youtube.com/watch?v=QyJBrS1c1s8&t=1234s&pp=ygUQc29ja2V0IGVtIHB5dGhvbg%3D%3D>. Acesso em: 10 de maio de 2024.
+
 </div>
 </div>
