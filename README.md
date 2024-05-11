@@ -29,7 +29,8 @@ cada uma com requisitos específicos:
 <h2> Autor <br></h2>
 <uL>
   <li><a href="https://github.com/TAlmeida003">Thiago Neri dos Santos Almeida</a></li>
-</ul>
+
+
 
 ![-----------------------------------------------------](img/len.png)
 <h1 align="center"> Sumário </h1>
@@ -414,7 +415,7 @@ Antes de detalharmos as rotas, é importante destacar os códigos de status HTTP
 	[
 		"desligar",
 		true
-	],
+	]
 ]
 ```
 <h3>Acessar uma opção do dispositivo: Pegar estado</h3>
