@@ -4,6 +4,7 @@
 <h1 align="center">Internet das Coisas (IoT)</h1>
 <h3 align="center">Projeto de Conexão de Dispositivos IoT através de Broker e API RESTful</h3>
 
+![-----------------------------------------------------](img/len.png)
 <div align="justify"> 
 <div id="sobre-o-projeto"> 
 <h2> Descrição do Projeto</h2>
@@ -24,11 +25,13 @@ cada uma com requisitos específicos:
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <h2> Autor <br></h2>
 <uL>
   <li><a href="https://github.com/TAlmeida003">Thiago Neri dos Santos Almeida</a></li>
 </ul>
 
+![-----------------------------------------------------](img/len.png)
 <h1 align="center"> Sumário </h1>
 <div id="sumario">
 	<ul>
@@ -44,7 +47,7 @@ cada uma com requisitos específicos:
 	</ul>	
 </div>
 
-
+![-----------------------------------------------------](img/len.png)
 <div id="Software">
 <h2> Softwares Utilizadas</h2>
 <div align="justify">
@@ -94,6 +97,7 @@ complexos.
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <div id="Broker">
 <h2> Broker e Dispositivos</h2>
 <div align="justify">
@@ -254,6 +258,7 @@ O arquivo principal (`__main__.py`) atua como o ponto de entrada do programa, co
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <div id="Conectividade">
 <h2> Interface de Rede</h2>
 <div align="justify">
@@ -349,6 +354,7 @@ HOST_HTTP: str = f'http://{HOST}:{PORT_FLASK}'  # Endereço de acesso ao servido
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <div id="API">
 <h2> API RESTful</h2>
 <div align="justify">
@@ -454,6 +460,7 @@ Antes de detalharmos as rotas, é importante destacar os códigos de status HTTP
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <div id="usuario">
 <h2> Aplicação de Controle iot</h2>
 <div align="justify">
@@ -498,6 +505,7 @@ visualização (<code>View.__init__.py </code>) e outro que gerencia o *loop* pr
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <div id="logica">
 <h2> Lógica de Funcionamento do Projeto</h2>
 <div align="justify">
@@ -591,6 +599,7 @@ dependendo da entidade envolvida, seja ela síncrona ou assíncrona.
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <div id="conclusao">
 <h2> Conclusão</h2>
 <div align="justify">
@@ -684,6 +693,7 @@ Após obter as imagens Docker, execute o seguinte comando para iniciar os contai
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <div id="referencias">  
 <h2> Referências</h2>
 <div align="justify">
