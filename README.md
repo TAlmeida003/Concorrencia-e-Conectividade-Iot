@@ -614,6 +614,7 @@ Em resumo, este projeto não apenas atendeu às expectativas de comunicação e 
 </div>
 </div>
 
+![-----------------------------------------------------](img/len.png)
 <div id="execucaoProjeto">
 <h2> Execução do Projeto</h2>
 <div align="justify">
