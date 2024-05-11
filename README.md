@@ -30,9 +30,10 @@ cada uma com requisitos específicos:
 <uL>
   <li><a href="https://github.com/TAlmeida003">Thiago Neri dos Santos Almeida</a></li>
 
-
+</ul>
 
 ![-----------------------------------------------------](img/len.png)
+
 <h1 align="center"> Sumário </h1>
 <div id="sumario">
 	<ul>
@@ -570,7 +571,6 @@ a eficiência da rede, são utilizadas duas técnicas principais.
 O uso de threads garante o processamento pseudo-paralelo das requisições. Com *threads*, é possível executar múltiplas operações simultaneamente, o que permite que o broker atenda a várias solicitações de dispositivos e clientes de forma eficiente. Isso significa que não é necessário esperar que uma solicitação seja concluída para lidar com a próxima, tornando o processo de comunicação mais ágil e responsivo. Além disso, o uso de threads exige uma sincronização adequada entre as partes (uso de *flags*) para evitar conflitos com a estrutura global de dados e garantir a integridade do sistema.
 
 
-<br>
 <br>
 
 >**Observação:** É importante observar que, embora o uso de threads otimize o desempenho do processo, ele também pode demandar recursos 
