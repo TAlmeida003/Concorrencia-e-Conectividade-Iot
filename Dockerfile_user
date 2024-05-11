@@ -13,4 +13,7 @@ RUN pip install requests
 # Make port 5000 available to the world outside this container
 EXPOSE 5002
 
+# Variables to be used in the container
+ENV HOST='192.168.25.107'
+
 CMD [ "python", "src/User"]

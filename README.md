@@ -671,9 +671,9 @@ seguintes comandos:
 
 Após construir as imagens Docker, execute o seguinte comando para iniciar os containers Docker:
 
-    docker run --network  host -iti user
-    docker run --network  host -iti car
-    docker run --network  host -iti sensor
+    docker run --network  host -iti -e HOST=IpBroker user
+    docker run --network  host -iti -e HOST=IpBroker car
+    docker run --network  host -iti -e HOST=IpBroker sensor
     docker run --network  host -iti broker
 
 
@@ -688,9 +688,9 @@ Para obter a imagem Docker pré-construída, execute o seguinte comando:
 Após obter as imagens Docker, execute o seguinte comando para iniciar os containers Docker:
 
     docker run --network host -iti thiago003/broker:broker 
-    docker run --network host -iti thiago003/car:car 
-    docker run --network host -iti thiago003/sensor:sensor 
-    docker run --network host -iti thiago003/user:user
+    docker run --network host -iti -e HOST=IpBroker thiago003/car:car 
+    docker run --network host -iti -e HOST=IpBroker thiago003/sensor:sensor 
+    docker run --network host -iti -e HOST=IpBroker thiago003/user:user
 
 </div>
 </div>
